@@ -40,7 +40,7 @@ namespace DocumentationBuilder {
             OptionsWindow ow = new OptionsWindow();
             DocumentStripper ds = new DocumentStripper(InputBox.Text, ow.OptionsVerticalIcon.Text, ow.OptionsHorizontalIcon.Text, ow.OptionsCrossIcon.Text, ow.OptionsTypeWidthBox.Text, ow.OptionsMethodWidth.Text);
             this.InputBox.Text = String.Empty;
-            InputBox.AppendText(ds.DisplayText().ToString());
+            InputBox.AppendText(ds.DisplayText());
         }
     }
 

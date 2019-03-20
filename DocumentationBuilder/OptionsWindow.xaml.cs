@@ -54,5 +54,16 @@ namespace DocumentationBuilder {
         private void OptionsVerticalIcon_GotFocus(object sender, RoutedEventArgs e) {
            
         }
+
+        private void OptionFilePathBrowseButton_Click(object sender, RoutedEventArgs e) {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "All Types(*.*)|*.*|Normal Text File (*.txt)|*.txt";
+        //    if (result == true) {
+                // Open document 
+                //string filename = dlg.FileName;
+                //textBox1.Text = filename;
+        //    }
+        }
     }
 }

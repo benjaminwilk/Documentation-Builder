@@ -31,7 +31,7 @@
                     <RadioButton x:Name="OptionPrintToScreenRadio" Content="Print to Screen" Canvas.Left="10" Canvas.Top="10"/>
                     <RadioButton x:Name="OptionPrintToFileRadio" Content="Print to File" Canvas.Left="10" Canvas.Top="40"/>
                     <TextBox x:Name="OptionFilePath" Height="23" Canvas.Left="91" TextWrapping="Wrap" Text="Filepath" Canvas.Top="38" Width="163"/>
-                    <Button x:Name="OptionFilePathBrowseButton" Content="Browse" Canvas.Left="259" Canvas.Top="40" Width="61"/>
+                    <Button x:Name="OptionFilePathBrowseButton" Content="Browse" Canvas.Left="259" Canvas.Top="40" Width="61" Click="OptionFilePathBrowseButton_Click"/>
                 </Canvas>
             </Canvas>
         </GroupBox>

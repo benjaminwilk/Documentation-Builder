@@ -13,6 +13,8 @@ namespace DocumentationBuilder {
         private char crosIcon;
         private int typeWidth;
         private int methodWidth;
+        private String ClassTitle;
+        private ArrayList TypesAndMethods;
 
         String[] userText;
 
@@ -23,6 +25,7 @@ namespace DocumentationBuilder {
             this.typeWidth = int.Parse(typeWidth);
             this.methodWidth = int.Parse(methodWidth);
             SplitInputText(inputText);
+            ParseUserText();
         }
 
         public void SplitInputText(String inputText) {
@@ -31,25 +34,53 @@ namespace DocumentationBuilder {
         }
 
         private void ParseUserText() {
+            for(int i = 0; i < userText.Length; i++) {
+                userText[i] = userText[i].Trim();
+            }
+            for (int p = 0; p < userText.Length; p++) {
+                if (userText[p].Contains("class")) {
+                    this.ClassTitle = userText[p];
+                }
+                if(userText[p].Contains("public")|| userText[p].Contains("private")) {
+                    TypesAndMethods.Add(userText[p]);
+                }
+            }
 
         }
 
-        private String GetVerticalLine() {
+        private String GetVerticalIcon() {
             return "" + this.vertIcon;
+        }
+
+        private String GetCrossIcon() {
+            return "" + this.crosIcon;
         }
 
         private String GetHorizontalLine() {
             StringBuilder horizontalLine = new StringBuilder();
-            horizontalLine.Append(this.crosIcon);
-            for (int i = 0; i < typeWidth; i++) {
-                horizontalLine.Append(this.horiIcon);
-            }
-            horizontalLine.Append(this.crosIcon);
-            for (int i = 0; i < methodWidth; i++) {
-                     horizontalLine.Append(this.horiIcon);
-            }
-            horizontalLine.Append(this.crosIcon + "\n");
+            horizontalLine.Append(DevelopTypeLine());
+            horizontalLine.Append(GetCrossIcon());
+            horizontalLine.Append(DevelopMethodLine());
             return horizontalLine.ToString();
+        }
+
+        private String DevelopTypeLine() {
+            StringBuilder typeLine = new StringBuilder();
+            typeLine.Append(GetCrossIcon());
+            for (int i = 0; i < typeWidth; i++) {
+                typeLine.Append(this.horiIcon);
+            }
+            return typeLine.ToString();
+        }
+
+        private String DevelopMethodLine() {
+            StringBuilder methodLine = new StringBuilder();
+            methodLine.Append(GetCrossIcon());
+            for (int i = 0; i < methodWidth; i++) {
+                methodLine.Append(this.horiIcon);
+            }
+            methodLine.Append(GetCrossIcon() + "\n");
+            return methodLine.ToString();
         }
 
         private String LeftAlignmentTextWithPadding(String passedText, int TypeOrMethod) {
@@ -59,27 +90,37 @@ namespace DocumentationBuilder {
             for (int i = spacingCount; i < TypeOrMethod; i++) {
                 leftAlign.Append(" ");
             }
-            return leftAlign.ToString();
+            return leftAlign.Append("\n").ToString();
         }
 
-        private String GetConstructorSummaryHeader() {
+        public String GetConstructorSummaryHeader() {
             StringBuilder constructorHeader = new StringBuilder();
-            constructorHeader.Append();
+            constructorHeader.Append(DevelopMethodLine());
+            constructorHeader.Append(GetVerticalIcon() + LeftAlignmentTextWithPadding("Constructor and Description", this.methodWidth) + GetVerticalIcon());
+            constructorHeader.Append(DevelopMethodLine());
+            return constructorHeader.ToString();
+        }
+
+        private String GetHeaderTitle() {
+            return "Class: " + this.ClassTitle;
         }
 
         private String GetMethodSummaryHeader() {
             StringBuilder headerMessage = new StringBuilder();
             headerMessage.Append(GetHorizontalLine());
-            headerMessage.Append(GetVerticalLine() + LeftAlignmentTextWithPadding("Modifier and Type", this.typeWidth) + GetVerticalLine() + LeftAlignmentTextWithPadding("Method and Description", this.methodWidth) + GetVerticalLine());
+            headerMessage.Append(GetVerticalIcon() + LeftAlignmentTextWithPadding("Modifier and Type", this.typeWidth) + GetVerticalIcon() + LeftAlignmentTextWithPadding("Method and Description", this.methodWidth) + GetVerticalIcon());
             headerMessage.Append(GetHorizontalLine());
             return headerMessage.ToString();
         }
 
         public String DisplayText() {
             StringBuilder sb =  new StringBuilder();
+            sb.Append(GetHeaderTitle());
+            sb.Append(GetConstructorSummaryHeader());
+            sb.Append("\n\n\n");
             sb.Append(GetMethodSummaryHeader());
             for (int i = 0; i < userText.Length; i++) {
-                sb.Append(userText[i]);
+                sb.Append(userText[i].Trim());
             }
             return sb.ToString();
         }
