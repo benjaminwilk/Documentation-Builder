@@ -10,18 +10,16 @@ namespace DocumentationBuilder {
 
         DataIcons di = new DataIcons();
 
-        private String ClassTitle;
-        private ArrayList TypesAndMethods;
-        private String[] typeName;
-        private String[] methodName;
-        private Boolean isSet = false;
+   //     private String ClassTitle;
+   //     private ArrayList TypesAndMethods;
+   //     private String[] typeName;
+   //     private String[] methodName;
 
         String[] userText;
 
         public DocumentStripper(String inputText, DataIcons userDefinedDI) {
+            UserClasses uc = new UserClasses(inputText);
             SetLocalData(userDefinedDI);
-
-            SplitInputText(inputText);
             ParseUserText();
             SplitTypesAndMethods();
         }
@@ -32,29 +30,6 @@ namespace DocumentationBuilder {
             this.di.SetCrosIcon(userDefinedDI.GetCrosIcon());
             this.di.SetTypeWidth(userDefinedDI.GetTypeWidth());
             this.di.SetMethodWidth(userDefinedDI.GetMethodWidth());
-        }
-
-        public void SplitInputText(String inputText) {
-            //Array rawInputText;
-            userText = inputText.Split('\n');
-        }
-
-        private void ParseUserText() {
-            this.TypesAndMethods = new ArrayList();
-            for(int i = 0; i < userText.Length; i++) {
-                userText[i] = userText[i].Trim();
-            }
-            for (int p = 0; p < userText.Length; p++) {
-                if (userText[p].Contains("class") && (this.isSet == false)) {
-                    this.ClassTitle = userText[p];
-                    this.isSet = true;
-                   
-                }
-                if(userText[p].Contains("public")|| userText[p].Contains("private")) {
-                    this.TypesAndMethods.Add(userText[p]);
-                }
-            }
-
         }
 
         public static String LeftAlignmentTextWithPadding(String passedText, int TypeOrMethod) {
@@ -75,16 +50,6 @@ namespace DocumentationBuilder {
             return horizontalLine.ToString();
         }*/
 
-        private void SplitTypesAndMethods() {
-            String[] splitValues;
-            this.typeName = new string[100];
-            this.methodName = new string[100];
-            for (int i = 0; i < TypesAndMethods.Count; i++) {
-                splitValues = TypesAndMethods[i].ToString().Split(' ');
-                this.typeName[i] = splitValues[1];
-                this.methodName[i] = splitValues[2];
-            }
-        }
 
         private String GetHeaderTitle() {
             //String[] headerData = this.ClassTitle.ToString().Split(' ');
@@ -254,12 +219,50 @@ namespace DocumentationBuilder {
     }
 
     class UserClasses {
-        private String userInputRawData;
+        private String[] userInputRawData;
         private String outputClassTitle;
         private String[] outputTypes;
         private String[] outputMethodNames;
         private String[] outputMethodDescription;
+        private Boolean isSet = false;
 
+        public UserClasses(String rawUserInput) {
+            SplitInputText(rawUserInput);
+        }
+
+        public void SplitInputText(String inputText) {
+            //Array rawInputText;
+            userInputRawData = inputText.Split('\n');
+        }
+
+        private void ParseUserText() {
+            this.TypesAndMethods = new ArrayList();
+            for (int i = 0; i < userText.Length; i++) {
+                userText[i] = userText[i].Trim();
+            }
+            for (int p = 0; p < userText.Length; p++) {
+                if (userText[p].Contains("class") && (this.isSet == false)) {
+                    this.ClassTitle = userText[p];
+                    this.isSet = true;
+
+                }
+                if (userText[p].Contains("public") || userText[p].Contains("private")) {
+                    this.TypesAndMethods.Add(userText[p]);
+                }
+            }
+
+        }
+
+        private void SplitTypesAndMethods() {
+            String[] splitValues;
+            this.typeName = new string[100];
+            this.methodName = new string[100];
+            for (int i = 0; i < TypesAndMethods.Count; i++) {
+                splitValues = TypesAndMethods[i].ToString().Split(' ');
+                this.typeName[i] = splitValues[1];
+                this.methodName[i] = splitValues[2];
+            }
+        }
 
     }
 }
