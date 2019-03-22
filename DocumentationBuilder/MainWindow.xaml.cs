@@ -19,6 +19,8 @@ namespace DocumentationBuilder {
     /// </summary>
     public partial class MainWindow : Window {
 
+        DataIcons userDI;
+
         public MainWindow() {
             InitializeComponent();
         }
@@ -38,9 +40,16 @@ namespace DocumentationBuilder {
 
         private void ComputationButton_Click(object sender, RoutedEventArgs e) {
             OptionsWindow ow = new OptionsWindow();
-            DocumentStripper ds = new DocumentStripper(InputBox.Text, ow.OptionsVerticalIcon.Text, ow.OptionsHorizontalIcon.Text, ow.OptionsCrossIcon.Text, ow.OptionsTypeWidthBox.Text, ow.OptionsMethodWidth.Text);
+            this.userDI = new DataIcons(ow.OptionsVerticalIcon.Text, ow.OptionsHorizontalIcon.Text, ow.OptionsCrossIcon.Text, Int32.Parse(ow.OptionsTypeWidthBox.Text), Int32.Parse(ow.OptionsMethodWidth.Text));
+            DocumentStripper ds = new DocumentStripper(InputBox.Text, this.userDI);
             this.InputBox.Text = String.Empty;
-            InputBox.AppendText(ds.DisplayText());
+            InputBox.AppendText(ds.GetConstructorSummaryHeader());
+            InputBox.AppendText("\n");
+            InputBox.AppendText(ds.GetMethodSummaryHeader());
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e) {
+            this.Close();
         }
     }
 
