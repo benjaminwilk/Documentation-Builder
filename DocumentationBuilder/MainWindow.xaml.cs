@@ -43,13 +43,29 @@ namespace DocumentationBuilder {
             this.userDI = new DataIcons(ow.OptionsVerticalIcon.Text, ow.OptionsHorizontalIcon.Text, ow.OptionsCrossIcon.Text, Int32.Parse(ow.OptionsTypeWidthBox.Text), Int32.Parse(ow.OptionsMethodWidth.Text));
             DocumentStripper ds = new DocumentStripper(InputBox.Text, this.userDI);
             this.InputBox.Text = String.Empty;
+            InputBox.AppendText(ds.GetHeaderTitle() + "\n\n");
             InputBox.AppendText(ds.GetConstructorSummaryHeader());
             InputBox.AppendText("\n");
+           // for (int p = 0; p < ) {
+
+//            }
             InputBox.AppendText(ds.GetMethodSummaryHeader());
+            for (int r = 0; r < ds.GetTypeMethodLength(); r++) {
+                if (!String.IsNullOrEmpty(ds.ReturnType(r)) || !String.IsNullOrEmpty(ds.ReturnMethodName(r))) { 
+                    InputBox.AppendText("\n" + this.userDI.GetVertIcon() + ds.ReturnType(r) + "\t" + this.userDI.GetVertIcon() + ds.ReturnMethodName(r) + this.userDI.GetVertIcon());
+                    InputBox.AppendText("\n" + this.userDI.GetVertIcon() + "                    " + this.userDI.GetVertIcon());
+          //      if (!String.IsNullOrEmpty(ds.ReturnMethodDescription(r))) {
+           //         InputBox.AppendText("MethodDescription here" + "\n");
+           //     } else {
+                    InputBox.AppendText("                           " + "\n");
+                    InputBox.AppendText(this.userDI.GetHorizontalDivider());
+                }
+                
+            }
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e) {
-            this.Close();
+            Application.Current.Shutdown();
         }
     }
 
