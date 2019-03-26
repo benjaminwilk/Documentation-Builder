@@ -19,8 +19,6 @@ namespace DocumentationBuilder {
     /// </summary>
     public partial class MainWindow : Window {
 
-        DataIcons userDI;
-
         public MainWindow() {
             InitializeComponent();
         }
@@ -39,27 +37,29 @@ namespace DocumentationBuilder {
         }
 
         private void ComputationButton_Click(object sender, RoutedEventArgs e) {
+            FormatData fd = new FormatData();
             OptionsWindow ow = new OptionsWindow();
-            this.userDI = new DataIcons(ow.OptionsVerticalIcon.Text, ow.OptionsHorizontalIcon.Text, ow.OptionsCrossIcon.Text, Int32.Parse(ow.OptionsTypeWidthBox.Text), Int32.Parse(ow.OptionsMethodWidth.Text));
-            DocumentStripper ds = new DocumentStripper(InputBox.Text, this.userDI);
+            TextFramework tf = new TextFramework(ow.OptionsVerticalIcon.Text, ow.OptionsHorizontalIcon.Text, ow.OptionsCrossIcon.Text, Int32.Parse(ow.OptionsTypeWidthBox.Text), Int32.Parse(ow.OptionsMethodWidth.Text));
+            DocumentStripper ds = new DocumentStripper(InputBox.Text, fd);
             this.InputBox.Text = String.Empty;
-            InputBox.AppendText(ds.GetHeaderTitle() + "\n\n");
-            InputBox.AppendText(ds.GetConstructorSummaryHeader());
-            InputBox.AppendText("\n");
-           // for (int p = 0; p < ) {
-
-//            }
-            InputBox.AppendText(ds.GetMethodSummaryHeader());
-            for (int r = 0; r < ds.GetTypeMethodLength(); r++) {
-                if (!String.IsNullOrEmpty(ds.ReturnType(r)) || !String.IsNullOrEmpty(ds.ReturnMethodName(r))) { 
+            InputBox.AppendText(fd.ReturnClassName());
+            InputBox.AppendText(tf.GetConstructorSummaryHeader() + "\n");
+            for (int p = 0; p < fd.ConstructorCount(); p++) {
+                InputBox.AppendText(tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetConstructor(p), 59) + tf.GetVertIcon() + "\n");
+                InputBox.AppendText(tf.GetConstructorDivider());
+            }
+            InputBox.AppendText("\n\n" + tf.GetMethodSummaryHeader());
+            for (int r = 0; r < fd.GetMethodCount(); r++) {
+                InputBox.AppendText("\n" + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetType(r), 19) + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetMethod(r), 59) + tf.GetVertIcon() + "\n");
+               /* if (!String.IsNullOrEmpty(ds.ReturnType(r)) || !String.IsNullOrEmpty(ds.ReturnMethodName(r))) { 
                     InputBox.AppendText("\n" + this.userDI.GetVertIcon() + ds.ReturnType(r) + "\t" + this.userDI.GetVertIcon() + ds.ReturnMethodName(r) + this.userDI.GetVertIcon());
                     InputBox.AppendText("\n" + this.userDI.GetVertIcon() + "                    " + this.userDI.GetVertIcon());
           //      if (!String.IsNullOrEmpty(ds.ReturnMethodDescription(r))) {
            //         InputBox.AppendText("MethodDescription here" + "\n");
            //     } else {
-                    InputBox.AppendText("                           " + "\n");
-                    InputBox.AppendText(this.userDI.GetHorizontalDivider());
-                }
+                    InputBox.AppendText("                           " + "\n");*/
+                InputBox.AppendText(tf.GetHorizontalDivider());
+            //    }
                 
             }
         }
