@@ -86,8 +86,11 @@ namespace DocumentationBuilder {
         }
 
         public void SetRawConstructors(String passedRawData) { // I'm not entirely sure what this does exactly, to be honest.  passedRawData is saved to rawConstructorsorMethods
-            String[] constructorAndComment = passedRawData.Split(new string[] { "//" }, StringSplitOptions.None);
-            this.rawConstructorsorMethods.Add(passedRawData);
+          //  if (passedRawData.Contains("//")) {
+                String[] constructorAndComment = passedRawData.Split(new string[] { "//" }, StringSplitOptions.None);
+        //    } else {
+                this.rawConstructorsorMethods.Add(passedRawData);
+         //   }
         }
 
         public void SplitDataAndCategorize() { // Method splits each passed row, and determines whether it's a constructor or a function.

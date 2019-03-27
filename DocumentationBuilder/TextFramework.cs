@@ -44,6 +44,21 @@ namespace DocumentationBuilder {
             return leftAlign.ToString();
         }
 
+        public String PrintCorrectLineLength(String passedText) {
+            if (passedText.Length < GetMethodWidth()) {
+                return passedText;
+            }
+            StringBuilder correctLength = new StringBuilder();
+            double splitter = passedText.Length / GetMethodWidth();
+            for (int u = 0; u <= splitter; u++) {
+                correctLength.Append(Environment.NewLine + CreateTypeSpace());
+                for (int count = 0; count < GetMethodWidth(); count++) {
+                    correctLength.Append(passedText.ToCharArray()[count]);
+                }
+            }
+            return correctLength.ToString();
+        }
+
         public static char GetOriginalVertIcon() {
             return origVertIcon;
         }
@@ -129,16 +144,16 @@ namespace DocumentationBuilder {
 
         public String GetConstructorSummaryHeader() {
             StringBuilder constructorHeader = new StringBuilder();
-            constructorHeader.Append(CreateMethodLine() + "\n");
-            constructorHeader.Append(GetVertIcon() + LeftAlignmentTextWithPadding(GetConstructorMessage(), this.methodWidth - 1) + GetVertIcon() + "\n");
+            constructorHeader.Append(CreateMethodLine() + Environment.NewLine);
+            constructorHeader.Append(GetVertIcon() + LeftAlignmentTextWithPadding(GetConstructorMessage(), this.methodWidth - 1) + GetVertIcon() + Environment.NewLine);
             constructorHeader.Append(CreateMethodLine());
             return constructorHeader.ToString();
         }
 
         public String GetMethodSummaryHeader() {
             StringBuilder headerMessage = new StringBuilder();
-            headerMessage.Append(GetHorizontalDivider() + "\n");
-            headerMessage.Append(GetVertIcon() + LeftAlignmentTextWithPadding(GetMethodMessage(), this.typeWidth - 1) + GetVertIcon() + LeftAlignmentTextWithPadding(GetMethodDescriptionMessage(), this.methodWidth - 1) + GetVertIcon() + "\n");
+            headerMessage.Append(GetHorizontalDivider() + Environment.NewLine);
+            headerMessage.Append(GetVertIcon() + LeftAlignmentTextWithPadding(GetMethodMessage(), this.typeWidth - 1) + GetVertIcon() + LeftAlignmentTextWithPadding(GetMethodDescriptionMessage(), this.methodWidth - 1) + GetVertIcon() + Environment.NewLine);
             headerMessage.Append(GetHorizontalDivider());
             return headerMessage.ToString();
         }
@@ -158,6 +173,16 @@ namespace DocumentationBuilder {
                 typeLine.Append(this.horiIcon);
             }
             return typeLine.ToString();
+        }
+
+        public String CreateTypeSpace() {
+            StringBuilder typeSpace = new StringBuilder();
+            typeSpace.Append(GetVertIcon());
+            for (int i = 0; i < GetTypeWidth(); i++) {
+                typeSpace.Append(" ");
+            }
+            typeSpace.Append(GetVertIcon());
+            return typeSpace.ToString();
         }
 
         private String AppendSymbolBefore(char passedIcon, String typeOrLine) {

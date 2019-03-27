@@ -52,24 +52,18 @@ namespace DocumentationBuilder {
             TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
             DocumentStripper ds = new DocumentStripper(InputBox.Text, fd);
             StringBuilder displayText = new StringBuilder();
-            //this.InputBox.Text = String.Empty;
-            //InputBox.AppendText(fd.ReturnClassName());
-            InputBox.AppendText(tf.GetConstructorSummaryHeader() + "\n");
+            InputBox.AppendText(tf.GetConstructorSummaryHeader() + Environment.NewLine);
             displayText.Append(fd.ReturnClassName());
-            displayText.Append(tf.GetConstructorSummaryHeader() + "\n");
+            displayText.Append(tf.GetConstructorSummaryHeader() + Environment.NewLine);
             for (int p = 0; p < fd.ConstructorCount(); p++) {
-                displayText.Append(tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetConstructor(p), 59) + tf.GetVertIcon() + "\n");
+                displayText.Append(tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetConstructor(p), 59) + tf.GetVertIcon() + Environment.NewLine);
                 displayText.Append(tf.GetConstructorDivider());
-                //InputBox.AppendText(tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetConstructor(p), 59) + tf.GetVertIcon() + "\n");
-                //InputBox.AppendText(tf.GetConstructorDivider());
             }
-            //InputBox.AppendText("\n\n" + tf.GetMethodSummaryHeader());
-            displayText.Append("\n\n" + tf.GetMethodSummaryHeader());
+            displayText.Append(Environment.NewLine + Environment.NewLine + tf.GetMethodSummaryHeader());
             for (int r = 0; r < fd.GetMethodCount(); r++) {
-                displayText.Append("\n" + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetType(r), 19) + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetMethod(r), 59) + tf.GetVertIcon() + "\n");
+                displayText.Append(Environment.NewLine + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetType(r), tf.GetTypeWidth() - 1) + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetMethod(r), tf.GetMethodWidth() - 1) + tf.GetVertIcon() + Environment.NewLine);
+                displayText.Append(tf.PrintCorrectLineLength(fd.GetType(r)));
                 displayText.Append(tf.GetHorizontalDivider());
-                //InputBox.AppendText("\n" + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetType(r), 19) + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetMethod(r), 59) + tf.GetVertIcon() + "\n");
-                //InputBox.AppendText(tf.GetHorizontalDivider());
             }
             return displayText.ToString();
         }
@@ -117,6 +111,86 @@ namespace DocumentationBuilder {
             TypeWidthInput.Text = "" + TextFramework.GetOriginalTypeWidth();
             MethodWidthInput.Text = String.Empty;
             MethodWidthInput.Text = "" + TextFramework.GetOriginalMethodWidth();
+        }
+
+        private void VerticalIconInput_Initialized(object sender, EventArgs e) {
+            VerticalIconInput.Text = "" + TextFramework.GetOriginalVertIcon();
+        }
+
+        private void HorizontalIconInput_Initialized(object sender, EventArgs e) {
+            HorizontalIconInput.Text = "" + TextFramework.GetOriginalHoriIcon();
+        }
+
+        private void CrossIconInput_Initialized(object sender, EventArgs e) {
+            CrossIconInput.Text = "" + TextFramework.GetOriginalCrosIcon();
+        }
+
+        private void TypeWidthInput_Initialized(object sender, EventArgs e) {
+            TypeWidthInput.Text = "" + TextFramework.GetOriginalTypeWidth();
+        }
+
+        private void MethodWidthInput_Initialized(object sender, EventArgs e) {
+            MethodWidthInput.Text = "" + TextFramework.GetOriginalMethodWidth();
+        }
+
+        private void VerticalIconInput_LostFocus(object sender, RoutedEventArgs e) {
+            if (VerticalIconInput.Text == "") {
+                VerticalIconInput.Text = "" + TextFramework.GetOriginalVertIcon();
+            }
+        }
+
+        private void VerticalIconInput_GotFocus(object sender, RoutedEventArgs e) {
+            VerticalIconInput.Text = String.Empty;
+        }
+
+        private void HorizontalIconInput_GotFocus(object sender, RoutedEventArgs e) {
+            HorizontalIconInput.Text = String.Empty;
+        }
+
+        private void CrossIconInput_GotFocus(object sender, RoutedEventArgs e) {
+            CrossIconInput.Text = String.Empty;
+        }
+
+        private void HorizontalIconInput_LostFocus(object sender, RoutedEventArgs e) {
+            if (HorizontalIconInput.Text == "") {
+                HorizontalIconInput.Text = "" + TextFramework.GetOriginalHoriIcon();
+            }
+        }
+
+        private void CrossIconInput_LostFocus(object sender, RoutedEventArgs e) {
+            if (CrossIconInput.Text == "") {
+                CrossIconInput.Text = "" + TextFramework.GetOriginalCrosIcon();
+            }
+        }
+
+        private void TypeWidthInput_GotFocus(object sender, RoutedEventArgs e) {
+            TypeWidthInput.Text = String.Empty;
+        }
+
+        private void MethodWidthInput_GotFocus(object sender, RoutedEventArgs e) {
+            MethodWidthInput.Text = String.Empty;
+        }
+
+        private void TypeWidthInput_LostFocus(object sender, RoutedEventArgs e) {
+            if (TypeWidthInput.Text == "") {
+                TypeWidthInput.Text = "" + TextFramework.GetOriginalTypeWidth();
+            }
+        }
+
+        private void MethodWidthInput_LostFocus(object sender, RoutedEventArgs e) {
+            if (MethodWidthInput.Text == "") {
+                MethodWidthInput.Text = "" + TextFramework.GetOriginalMethodWidth();
+            }
+        }
+
+        private void InputBox_GotFocus(object sender, RoutedEventArgs e) {
+            InputBox.Text = String.Empty;
+        }
+
+        private void InputBox_LostFocus(object sender, RoutedEventArgs e) {
+            if (InputBox.Text == "") {
+                InputBox.Text = "Paste in Functions you would like formatted";
+            }
         }
     }
 }
