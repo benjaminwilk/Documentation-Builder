@@ -36,30 +36,31 @@
                             <GroupBox x:Name="OptionOutputSettingsBox" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Output Settings" Height="92" Width="464" Margin="76,223,0,0" Grid.ColumnSpan="2">
                                 <Canvas>
                                     <Canvas Height="100" Canvas.Left="10" Width="465">
-                                        <RadioButton x:Name="PrintToScreenRadio" Content="Print to Screen" Canvas.Left="10" Canvas.Top="10"/>
-                                        <RadioButton x:Name="PrintToFileRadio" Content="Print to File" Canvas.Left="10" Canvas.Top="40"/>
-                                        <TextBox x:Name="FilePath" Height="23" Canvas.Left="91" TextWrapping="Wrap" Text="Filepath" Canvas.Top="38" Width="279"/>
-                                        <Button x:Name="FilePathBrowseButton" Content="Browse" Canvas.Left="375" Canvas.Top="40" Width="61"/>
+                                        <RadioButton x:Name="PrintToScreenRadio" Content="Print to Screen" Canvas.Left="10" Canvas.Top="10" IsEnabled="True" IsChecked="True"/>
+                                        <RadioButton x:Name="PrintToFileRadio" Content="Print to File" Canvas.Left="10" Canvas.Top="40" IsEnabled="True"/>
+                                        <TextBox x:Name="FilePath" Height="23" Canvas.Left="91" TextWrapping="Wrap" Text="Filepath" IsEnabled="{Binding ElementName=PrintToFileRadio, Path=IsChecked}" Canvas.Top="38" Width="279" GotFocus="FilePath_GotFocus"/>
+                                        <Button x:Name="FilePathBrowseButton" Content="Browse" Canvas.Left="375" Canvas.Top="40" IsEnabled="{Binding ElementName=PrintToFileRadio, Path=IsChecked}" Width="61" Click="FilePathBrowseButton_Click"/>
                                     </Canvas>
                                 </Canvas>
                             </GroupBox>
-                            <GroupBox x:Name="WidthBox" Header="Width" HorizontalAlignment="Left" Height="145" Margin="356,10,0,0" VerticalAlignment="Top" Width="184" Grid.Column="1">
+                            <GroupBox x:Name="WidthBox" Header="Width" HorizontalAlignment="Left" Height="192" Margin="344,10,0,0" VerticalAlignment="Top" Width="250" Grid.Column="1">
                                 <Canvas Height="167" InkCanvas.Left="10" Margin="0,5,-2,5">
                                     <Label x:Name="OptionsWidthText" Content="Type Width: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="26"/>
                                     <Label x:Name="OptionsMethodText" Content="Method Width: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="60"/>
                                     <TextBox x:Name="TypeWidthInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="35" Canvas.Left="123" Canvas.Top="28"/>
                                     <TextBox x:Name="MethodWidthInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="60" VerticalAlignment="Top" Width="35" Canvas.Left="123" Canvas.Top="63"/>
-
+                                    <Button x:Name="resetWidths" Content="Reset" Canvas.Left="10" Canvas.Top="134" Width="81" Height="23" Click="WidthResetButton_Click" />
                                 </Canvas>
                             </GroupBox>
-                            <GroupBox Grid.Column="1" Header="Icons" HorizontalAlignment="Left" Height="146" Margin="44,10,0,0" VerticalAlignment="Top" Width="183">
-                                <Canvas x:Name="IconBox" HorizontalAlignment="Left" Height="136" Margin="10,0,0,-12" VerticalAlignment="Top" Width="164">
+                            <GroupBox Grid.Column="1" Header="Icons" HorizontalAlignment="Left" Height="192" Margin="10,10,0,0" VerticalAlignment="Top" Width="250">
+                                <Canvas x:Name="IconBox" HorizontalAlignment="Left" Height="174" Margin="0,0,-2,-4" VerticalAlignment="Top" Width="240">
                                     <Label x:Name="OptionsVerticalText_Copy" Content="Vertical Icon: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                                     <Label x:Name="OptionsHorizontalText_Copy" Content="Horizontal Icon: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="45"/>
                                     <Label Content="Cross Icon: " HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="10" Canvas.Top="82"/>
                                     <TextBox x:Name="VerticalIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="|" VerticalAlignment="Top" Width="27" Padding="8,1,1,1" Canvas.Left="127" Canvas.Top="13"/>
                                     <TextBox x:Name="HorizontalIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="-" VerticalAlignment="Top" Width="27" Padding="7,1,1,1" Canvas.Left="127" Canvas.Top="47"/>
                                     <TextBox x:Name="CrossIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="+" VerticalAlignment="Top" Width="27" RenderTransformOrigin="0.574,0.852" Padding="4,1,10,1" Canvas.Left="127" Canvas.Top="82"/>
+                                    <Button Content="Reset" Canvas.Left="10" Canvas.Top="141" Width="81" Height="23" Click="IconsResetButton_Click" />
                                 </Canvas>
                             </GroupBox>
                         </Grid>

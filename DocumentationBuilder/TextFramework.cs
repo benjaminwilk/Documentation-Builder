@@ -12,6 +12,12 @@ namespace DocumentationBuilder {
         private int typeWidth;
         private int methodWidth;
 
+        private static char origVertIcon = '|';
+        private static char origHoriIcon = '-';
+        private static char origCrosIcon = '+';
+        private static int origTypeWidth = 20;
+        private static int origMethodWidth = 60;
+
         public TextFramework(String passedVertIcon, String passedHoriIcon, String passedCrosIcon, int passedTypeWidth, int passedMethodWidth) {
             SetVertIcon(passedVertIcon);
             SetHoriIcon(passedHoriIcon);
@@ -36,6 +42,25 @@ namespace DocumentationBuilder {
                 leftAlign.Append(" ");
             }
             return leftAlign.ToString();
+        }
+
+        public static char GetOriginalVertIcon() {
+            return origVertIcon;
+        }
+        public static char GetOriginalHoriIcon() {
+            return origHoriIcon;
+        }
+
+        public static char GetOriginalCrosIcon() {
+            return origCrosIcon;
+        }
+
+        public static int GetOriginalTypeWidth() {
+            return origTypeWidth;
+        }
+
+        public static int GetOriginalMethodWidth() {
+            return origMethodWidth;
         }
 
         public void SetVertIcon(char passedVertIcon) {
