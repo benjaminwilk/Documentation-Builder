@@ -23,10 +23,10 @@ namespace DocumentationBuilder {
             InitializeComponent();
         }
 
-        private void MenuOptionButton_Click(object sender, RoutedEventArgs e) {
+     /*   private void MenuOptionButton_Click(object sender, RoutedEventArgs e) {
             OptionsWindow ow = new OptionsWindow();
             ow.Show();
-        }
+        }*/
 
         private void MenuCloseButton_Click(object sender, RoutedEventArgs e) {
             System.Windows.Application.Current.Shutdown();
@@ -38,8 +38,8 @@ namespace DocumentationBuilder {
 
         private void ComputationButton_Click(object sender, RoutedEventArgs e) {
             FormatData fd = new FormatData();
-            OptionsWindow ow = new OptionsWindow();
-            TextFramework tf = new TextFramework(ow.OptionsVerticalIcon.Text, ow.OptionsHorizontalIcon.Text, ow.OptionsCrossIcon.Text, Int32.Parse(ow.OptionsTypeWidthBox.Text), Int32.Parse(ow.OptionsMethodWidth.Text));
+       //     OptionsWindow ow = new OptionsWindow();
+            TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
             DocumentStripper ds = new DocumentStripper(InputBox.Text, fd);
             this.InputBox.Text = String.Empty;
             InputBox.AppendText(fd.ReturnClassName());
@@ -51,13 +51,6 @@ namespace DocumentationBuilder {
             InputBox.AppendText("\n\n" + tf.GetMethodSummaryHeader());
             for (int r = 0; r < fd.GetMethodCount(); r++) {
                 InputBox.AppendText("\n" + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetType(r), 19) + tf.GetVertIcon() + TextFramework.LeftAlignmentTextWithPadding(fd.GetMethod(r), 59) + tf.GetVertIcon() + "\n");
-               /* if (!String.IsNullOrEmpty(ds.ReturnType(r)) || !String.IsNullOrEmpty(ds.ReturnMethodName(r))) { 
-                    InputBox.AppendText("\n" + this.userDI.GetVertIcon() + ds.ReturnType(r) + "\t" + this.userDI.GetVertIcon() + ds.ReturnMethodName(r) + this.userDI.GetVertIcon());
-                    InputBox.AppendText("\n" + this.userDI.GetVertIcon() + "                    " + this.userDI.GetVertIcon());
-          //      if (!String.IsNullOrEmpty(ds.ReturnMethodDescription(r))) {
-           //         InputBox.AppendText("MethodDescription here" + "\n");
-           //     } else {
-                    InputBox.AppendText("                           " + "\n");*/
                 InputBox.AppendText(tf.GetHorizontalDivider());
             //    }
                 
@@ -67,6 +60,7 @@ namespace DocumentationBuilder {
         private void QuitButton_Click(object sender, RoutedEventArgs e) {
             Application.Current.Shutdown();
         }
+
     }
 
 }

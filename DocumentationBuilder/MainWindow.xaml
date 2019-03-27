@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DocumentationBuilder"
         mc:Ignorable="d"
-        Title="Documentation Builder" Height="417.633" Width="668.446">
+        Title="Documentation Builder" Height="484.454" Width="668.446">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -15,15 +15,60 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem x:Name="MenuOptionButton" Header="_Options" Click="MenuOptionButton_Click"/>
                     <MenuItem x:Name="MenuCloseButton" Header="_Close" Click="MenuCloseButton_Click"/>
                 </MenuItem>
             </Menu>
-            <StackPanel Margin="0,0,0,27"></StackPanel>
+            <StackPanel Margin="0,0,0,27">
+                <TabControl Height="381" Width="614">
+                    <TabItem Header="Input">
+                        <Grid Background="#FFE5E5E5">
+                            <Canvas HorizontalAlignment="Left" Height="100">
+                                <TextBox x:Name="InputBox" HorizontalAlignment="Left" Height="330" TextWrapping="Wrap" Text="Paste in Functions you would like formatted" VerticalAlignment="Top" Width="582" AcceptsReturn="True" FontFamily="Courier New" FontSize="11" VerticalScrollBarVisibility="Auto" Canvas.Left="11" Canvas.Top="-109"/>
+                            </Canvas>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Options">
+                        <Grid Background="#FFF3F1F1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox x:Name="OptionOutputSettingsBox" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Output Settings" Height="92" Width="464" Margin="76,223,0,0" Grid.ColumnSpan="2">
+                                <Canvas>
+                                    <Canvas Height="100" Canvas.Left="10" Width="465">
+                                        <RadioButton x:Name="PrintToScreenRadio" Content="Print to Screen" Canvas.Left="10" Canvas.Top="10"/>
+                                        <RadioButton x:Name="PrintToFileRadio" Content="Print to File" Canvas.Left="10" Canvas.Top="40"/>
+                                        <TextBox x:Name="FilePath" Height="23" Canvas.Left="91" TextWrapping="Wrap" Text="Filepath" Canvas.Top="38" Width="279"/>
+                                        <Button x:Name="FilePathBrowseButton" Content="Browse" Canvas.Left="375" Canvas.Top="40" Width="61"/>
+                                    </Canvas>
+                                </Canvas>
+                            </GroupBox>
+                            <GroupBox x:Name="WidthBox" Header="Width" HorizontalAlignment="Left" Height="145" Margin="356,10,0,0" VerticalAlignment="Top" Width="184" Grid.Column="1">
+                                <Canvas Height="167" InkCanvas.Left="10" Margin="0,5,-2,5">
+                                    <Label x:Name="OptionsWidthText" Content="Type Width: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="26"/>
+                                    <Label x:Name="OptionsMethodText" Content="Method Width: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="60"/>
+                                    <TextBox x:Name="TypeWidthInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="35" Canvas.Left="123" Canvas.Top="28"/>
+                                    <TextBox x:Name="MethodWidthInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="60" VerticalAlignment="Top" Width="35" Canvas.Left="123" Canvas.Top="63"/>
+
+                                </Canvas>
+                            </GroupBox>
+                            <GroupBox Grid.Column="1" Header="Icons" HorizontalAlignment="Left" Height="146" Margin="44,10,0,0" VerticalAlignment="Top" Width="183">
+                                <Canvas x:Name="IconBox" HorizontalAlignment="Left" Height="136" Margin="10,0,0,-12" VerticalAlignment="Top" Width="164">
+                                    <Label x:Name="OptionsVerticalText_Copy" Content="Vertical Icon: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                                    <Label x:Name="OptionsHorizontalText_Copy" Content="Horizontal Icon: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="45"/>
+                                    <Label Content="Cross Icon: " HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="10" Canvas.Top="82"/>
+                                    <TextBox x:Name="VerticalIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="|" VerticalAlignment="Top" Width="27" Padding="8,1,1,1" Canvas.Left="127" Canvas.Top="13"/>
+                                    <TextBox x:Name="HorizontalIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="-" VerticalAlignment="Top" Width="27" Padding="7,1,1,1" Canvas.Left="127" Canvas.Top="47"/>
+                                    <TextBox x:Name="CrossIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="+" VerticalAlignment="Top" Width="27" RenderTransformOrigin="0.574,0.852" Padding="4,1,10,1" Canvas.Left="127" Canvas.Top="82"/>
+                                </Canvas>
+                            </GroupBox>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
         </DockPanel>
-        <TextBox x:Name="InputBox" HorizontalAlignment="Left" Height="309" Margin="10,29,0,0" TextWrapping="Wrap" Text="Paste in Functions you would like formatted" VerticalAlignment="Top" Width="640" AcceptsReturn="True" FontFamily="Courier New" FontSize="11" VerticalScrollBarVisibility="Auto"/>
-        <Button x:Name="ComputationButton" Content="Compute" HorizontalAlignment="Left" Margin="561,356,0,0" VerticalAlignment="Top" Width="75" Click="ComputationButton_Click"/>
-        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="23,356,0,0" VerticalAlignment="Top" Width="75" Click="QuitButton_Click"/>
+        <Button x:Name="ComputationButton" Content="Compute" HorizontalAlignment="Left" Margin="563,409,0,0" VerticalAlignment="Top" Width="75" Click="ComputationButton_Click"/>
+        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="26,410,0,0" VerticalAlignment="Top" Width="75" Click="QuitButton_Click"/>
 
     </Grid>
 </Window>
