@@ -29,14 +29,22 @@ namespace DocumentationBuilder {
                 if (userInputRawData[p].Contains("class")) {
                     fd.SetClassName(userInputRawData[p]);
                 }
-                String pattern = @"^(?!.*=)(public|private).*";
-                foreach (Match m in Regex.Matches(userInputRawData[p].ToString(), pattern)) {
-                    fd.SetRawConstructors(m.Value);
+                String constructorMatch = @"^(public|private).([^\s]+).\(";
+                String functionMatch = @"^(public|private).\w+\s\w+\(";
+                String functionOrConstructor = @"^(public|private)\s\w+.*$";
+                foreach (Match m in Regex.Matches(userInputRawData[p].ToString(), functionOrConstructor)) {
+                    if (!m.Value.Contains('=') && Regex.IsMatch(m.Value, constructorMatch)) {
+                        fd.SplitConstructorComment(m.Value);
+                    }
+                    else if (!m.Value.Contains('=') && Regex.IsMatch(m.Value, functionMatch)) {
+                        fd.SplitFunctionComment(m.Value);
+                    }
+                    //fd.SplitConstructorComment(m.Value);
                 }
+                //  fd.SplitDataAndCategorize();
             }
-            fd.SplitDataAndCategorize();
-        }
 
+        }
     }
 
     class FormatData { // This class does all the heavy lifting, it parses the data and places it in the appropriate arrays.
@@ -85,15 +93,28 @@ namespace DocumentationBuilder {
             return "Class: " + GetClassName() + "\n\n";
         }
 
-        public void SetRawConstructors(String passedRawData) { // I'm not entirely sure what this does exactly, to be honest.  passedRawData is saved to rawConstructorsorMethods
-          //  if (passedRawData.Contains("//")) {
-                String[] constructorAndComment = passedRawData.Split(new string[] { "//" }, StringSplitOptions.None);
-        //    } else {
-                this.rawConstructorsorMethods.Add(passedRawData);
-         //   }
+        public void SplitConstructorComment(String passedRawData) { // I'm not entirely sure what this does exactly, to be honest.  passedRawData is saved to rawConstructorsorMethods
+            String[] visibilityAndConstructor = passedRawData.Split(new[] { ' ' }, 3);
+            if (passedRawData.Contains("//")) {
+                    String[] constructorAndComment = passedRawData.Split(new string[] { "//" }, StringSplitOptions.None);
+                    SetConstructor(visibilityAndConstructor[1], constructorAndComment[1]);
+                } else {
+                    SetConstructor(visibilityAndConstructor[1]);
+            }
         }
 
-        public void SplitDataAndCategorize() { // Method splits each passed row, and determines whether it's a constructor or a function.
+        public void SplitFunctionComment(String passedRawData) {
+            String[] visibilityAndFunction = passedRawData.Split(new[] { ' ' }, 3);
+            if (passedRawData.Contains("//")) {
+                String[] functionAndComment = visibilityAndFunction[1].Split(new string[] { "//" }, StringSplitOptions.None);
+                SetDataLine(visibilityAndFunction[1], functionAndComment[0], functionAndComment[1]);
+            } else {
+                String[] removeParentheses = visibilityAndFunction[2].Split('{');
+                SetDataLine(visibilityAndFunction[1], removeParentheses[0]);
+            }           
+        }
+
+        /*public void SplitDataAndCategorize() { // Method splits each passed row, and determines whether it's a constructor or a function.
             for (int i = 0; i < this.rawConstructorsorMethods.Count; i++) {
                 String[] dataToSplit = this.rawConstructorsorMethods[i].ToString().Split(' ');
                 if (dataToSplit.Length == 2) {
@@ -111,20 +132,20 @@ namespace DocumentationBuilder {
                 }
 
             }
-        }
+        }*/
 
         public void SetConstructor(String passedConstruct) { // Method that saves passed data to constructor dataset.  If only one argument is passed, constructor comment is blank.
-            this.Constructor.Add(passedConstruct);
+            this.Constructor.Add(passedConstruct.Trim());
             this.ConstructorComment.Add("");
         }
 
         public void SetConstructor(String passedConstruct, String passedComment) { // Similar to the method above, but with a passed comment variable.
-            this.Constructor.Add(passedConstruct);
-            this.ConstructorComment.Add(passedComment);
+            this.Constructor.Add(passedConstruct.Trim());
+            this.ConstructorComment.Add(passedComment.Trim());
         }
 
         public void SetVariables(String passedVariable) { // I'm not sure whether I'm going to implement this or not.  This will save passed variables to an arraylist.
-            this.Variables.Add(passedVariable);
+            this.Variables.Add(passedVariable.Trim());
         }
 
         public String[] GetVariables() { 
@@ -140,20 +161,20 @@ namespace DocumentationBuilder {
         }
 
         public void SetDataLine(String passedType, String passedMethod, String passedComment) {
-            this.Types.Add(passedType);
-            this.MethodName.Add(passedMethod);
-            this.MethodComment.Add(passedComment);
+            this.Types.Add(passedType.Trim());
+            this.MethodName.Add(passedMethod.Trim());
+            this.MethodComment.Add(passedComment.Trim());
         }
 
         public void SetDataLine(String passedType, String passedMethod) {
-            this.Types.Add(passedType);
-            this.MethodName.Add(passedMethod);
+            this.Types.Add(passedType.Trim());
+            this.MethodName.Add(passedMethod.Trim());
             this.MethodComment.Add("");
         }
 
         public void SetDataLine(String passedMethod) {
             this.Types.Add("");
-            this.MethodName.Add(passedMethod);
+            this.MethodName.Add(passedMethod.Trim());
             this.MethodComment.Add("");
         }
 
@@ -167,6 +188,10 @@ namespace DocumentationBuilder {
 
         public String GetType(int positionValue) { // Function that gets a type saved at a specific location.
             return this.Types[positionValue].ToString();
+        }
+
+        public String ReturnConstructor(int positionValue) {
+            return this.Constructor[positionValue].ToString() + " -- " + this.ConstructorComment[positionValue].ToString();
         }
 
         public int ConstructorCount() { // This is an assistance function, this is for a loop or something.
