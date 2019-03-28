@@ -95,7 +95,7 @@ namespace DocumentationBuilder {
 
         public void SplitConstructorComment(String passedRawData) { // I'm not entirely sure what this does exactly, to be honest.  passedRawData is saved to rawConstructorsorMethods
             String[] visibilityAndConstructor = passedRawData.Split(new[] { ' ' }, 3);
-            if (passedRawData.Contains("//")) {
+            if (Regex.IsMatch(passedRawData, @"//.*$")) {
                     String[] constructorAndComment = passedRawData.Split(new string[] { "//" }, StringSplitOptions.None);
                     SetConstructor(visibilityAndConstructor[1], constructorAndComment[1]);
                 } else {
@@ -113,26 +113,6 @@ namespace DocumentationBuilder {
                 SetDataLine(visibilityAndFunction[1], removeParentheses[0]);
             }           
         }
-
-        /*public void SplitDataAndCategorize() { // Method splits each passed row, and determines whether it's a constructor or a function.
-            for (int i = 0; i < this.rawConstructorsorMethods.Count; i++) {
-                String[] dataToSplit = this.rawConstructorsorMethods[i].ToString().Split(' ');
-                if (dataToSplit.Length == 2) {
-                    this.SetConstructor(dataToSplit[1]);
-                }
-                if (dataToSplit.Length == 3) {
-                    this.SetDataLine(dataToSplit[1], dataToSplit[2]);
-                }
-                if (dataToSplit.Length > 3) {
-                    StringBuilder splitTitles = new StringBuilder();
-                    for (int q = 1; q < dataToSplit.Length; q++) {
-                        splitTitles.Append(dataToSplit[q] + " ");
-                    }
-                    this.SetDataLine(dataToSplit[1], splitTitles.ToString());
-                }
-
-            }
-        }*/
 
         public void SetConstructor(String passedConstruct) { // Method that saves passed data to constructor dataset.  If only one argument is passed, constructor comment is blank.
             this.Constructor.Add(passedConstruct.Trim());
@@ -188,6 +168,10 @@ namespace DocumentationBuilder {
 
         public String GetType(int positionValue) { // Function that gets a type saved at a specific location.
             return this.Types[positionValue].ToString();
+        }
+
+        public String GetMethodComment(int positionValue) {
+            return this.MethodComment[positionValue].ToString();
         }
 
         public String ReturnConstructor(int positionValue) {

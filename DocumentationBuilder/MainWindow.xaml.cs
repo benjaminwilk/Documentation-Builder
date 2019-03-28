@@ -47,15 +47,6 @@ namespace DocumentationBuilder {
             }
         }
 
-        private String AssembleConstructorRow(TextFramework userFramework, String displayString) {
-            StringBuilder constructionRow = new StringBuilder();
-            constructionRow.Append(userFramework.GetVertIcon());
-            constructionRow.Append(TextFramework.LeftAlignmentTextWithPadding(displayString, userFramework.GetMethodWidth()));
-            constructionRow.Append(userFramework.GetVertIcon() + Environment.NewLine);
-            constructionRow.Append(userFramework.GetConstructorDivider());
-            return constructionRow.ToString();
-        }
-
         private String formatOutputText() {
             FormatData fd = new FormatData();
             TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
@@ -65,17 +56,15 @@ namespace DocumentationBuilder {
             displayText.Append(fd.ReturnClassName());
             displayText.Append(tf.GetConstructorSummaryHeader() + Environment.NewLine);
             for (int p = 0; p < fd.ConstructorCount(); p++) {
-                displayText.Append(AssembleConstructorRow(tf, fd.GetConstructor(p)));
+                displayText.Append(tf.AssembleConstructorRow(fd.GetConstructor(p)));
             }
             displayText.Append(Environment.NewLine + Environment.NewLine + tf.GetMethodSummaryHeader());
             for (int r = 0; r < fd.GetMethodCount(); r++) {
-                displayText.Append(Environment.NewLine + tf.GetVertIcon());
-                displayText.Append(TextFramework.LeftAlignmentTextWithPadding(fd.GetType(r), tf.GetTypeWidth()));
-                displayText.Append(tf.GetVertIcon());
-                displayText.Append(TextFramework.LeftAlignmentTextWithPadding(fd.GetMethod(r), tf.GetMethodWidth()));
-                displayText.Append(tf.GetVertIcon() + Environment.NewLine);
-            //    displayText.Append(tf.PrintCorrectLineLength(fd.GetType(r)));
-                displayText.Append(tf.GetHorizontalDivider());
+                if (fd.GetMethodComment(r).Equals("")) {
+                    displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r)));
+                } else {
+                    displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r)));
+                }
             }
             return displayText.ToString();
         }

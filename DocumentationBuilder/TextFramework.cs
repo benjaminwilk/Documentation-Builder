@@ -36,7 +36,6 @@ namespace DocumentationBuilder {
 
         public static String LeftAlignmentTextWithPadding(String passedText, int TypeOrMethod) {
             StringBuilder leftAlign = new StringBuilder();
-         //   int spacingCount = TypeOrMethod - passedText.Length;
             leftAlign.Append(passedText);
             for (int i = 1; i <= TypeOrMethod - passedText.Length; i++) {
                 leftAlign.Append(" ");
@@ -166,6 +165,38 @@ namespace DocumentationBuilder {
             return "Method and Description";
         }
 
+        public String AssembleConstructorRow(String displayString) {
+            StringBuilder constructionRow = new StringBuilder();
+            constructionRow.Append(GetVertIcon());
+            constructionRow.Append(TextFramework.LeftAlignmentTextWithPadding(displayString, GetMethodWidth()));
+            constructionRow.Append(GetVertIcon() + Environment.NewLine);
+            constructionRow.Append(GetConstructorDivider());
+            return constructionRow.ToString();
+        }
+
+        public String AssembleFunctionRow(String passedType, String passedMethod) {
+            StringBuilder functionRow = new StringBuilder();
+            functionRow.Append(Environment.NewLine + GetVertIcon());
+            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedType, GetTypeWidth()));
+            functionRow.Append(GetVertIcon());
+            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedMethod, GetMethodWidth()));
+            functionRow.Append(GetVertIcon() + Environment.NewLine);
+            functionRow.Append(GetHorizontalDivider());
+            return functionRow.ToString();
+        }
+
+        public String AssembleFunctionRow(String passedType, String passedMethod, String passedComment) {
+            StringBuilder functionRow = new StringBuilder();
+            functionRow.Append(Environment.NewLine + GetVertIcon());
+            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedType, GetTypeWidth()));
+            functionRow.Append(GetVertIcon());
+            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedMethod, GetMethodWidth()));
+            functionRow.Append(GetVertIcon() + Environment.NewLine);
+            functionRow.Append(GetVertIcon() + GetVertIcon() + GetVertIcon() + Environment.NewLine);
+            functionRow.Append(GetHorizontalDivider());
+            return functionRow.ToString();
+        }
+
         public String GetConstructorSummaryHeader() {
             StringBuilder constructorHeader = new StringBuilder();
             constructorHeader.Append(CreateMethodLine() + Environment.NewLine);
@@ -215,13 +246,13 @@ namespace DocumentationBuilder {
             return typeSpace.ToString();
         }
 
-        private String AppendSymbolBefore(char passedIcon, String typeOrLine) {
+     /*   private String AppendSymbolBefore(char passedIcon, String typeOrLine) {
             return passedIcon + typeOrLine;
         }
 
         private String AppendSymbolAfter(char passedIcon, String typeOrLine) {
             return typeOrLine + passedIcon;
-        }
+        }*/
 
         private String CreateMethodLine() {
             StringBuilder methodLine = new StringBuilder();
