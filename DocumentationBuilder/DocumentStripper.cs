@@ -105,8 +105,8 @@ namespace DocumentationBuilder {
 
         public void SplitFunctionComment(String passedRawData) {
             String[] visibilityAndFunction = passedRawData.Split(new[] { ' ' }, 3);
-            if (passedRawData.Contains("//")) {
-                String[] functionAndComment = visibilityAndFunction[1].Split(new string[] { "//" }, StringSplitOptions.None);
+            if (Regex.IsMatch(passedRawData, @"//.*$")) {
+                String[] functionAndComment = visibilityAndFunction[2].Split(new string[] { "//" }, StringSplitOptions.None);
                 SetDataLine(visibilityAndFunction[1], functionAndComment[0], functionAndComment[1]);
             } else {
                 String[] removeParentheses = visibilityAndFunction[2].Split('{');

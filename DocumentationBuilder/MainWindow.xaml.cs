@@ -63,7 +63,7 @@ namespace DocumentationBuilder {
                 if (fd.GetMethodComment(r).Equals("")) {
                     displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r)));
                 } else {
-                    displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r)));
+                    displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r), tf));
                 }
             }
             return displayText.ToString();
