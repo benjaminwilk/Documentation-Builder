@@ -95,38 +95,23 @@ namespace DocumentationBuilder {
             return false;
         }
 
-        public String FunctionOverflowSplit(String passedFunction, Boolean printOverflow) {
-            if (printOverflow) {
-                StringBuilder functionOverflow = new StringBuilder();
-                String builder = "";
-                int characterCount = 0;
-                for (int lineCount = 0; lineCount < (passedFunction.Length / this.udi.GetMethodWidth()); lineCount++) {
-                    for (int i = 0; i < udi.GetMethodWidth(); i++) {
-                    }
-                }
-            } else {
-                return passedFunction;
-            }
-            return passedFunction;
-        }
-
-        public String SplitCommentText(String passedComment) {
+        public String FormatOverflowText(String passedComment, int typeOrMethodWidth) {
             StringBuilder outputText = new StringBuilder();
             ArrayList texter = new ArrayList();
             StringBuilder outputter = new StringBuilder();
-            if (passedComment.Length % this.udi.GetMethodWidth() != 0) {
+            if (passedComment.Length % typeOrMethodWidth != 0) {
                 do {
                     passedComment += " ";
-                } while (passedComment.Length % this.udi.GetMethodWidth() != 0);
+                } while (passedComment.Length % typeOrMethodWidth != 0);
             }
             int character = 0;
             int multiplier = 1;
-            for (int row = 0; row < passedComment.Length / this.udi.GetMethodWidth(); row++) {
+            for (int row = 0; row < passedComment.Length / typeOrMethodWidth; row++) {
                 do {
                     outputText.Append(passedComment[character]);
                     character++;
-                } while (character != (this.udi.GetMethodWidth() * multiplier));
-                texter.Add(CreateTypeSpace() + outputText + "|");
+                } while (character != (typeOrMethodWidth * multiplier));
+                texter.Add(DevelopLine(" ", this.udi.GetTypeWidth()) + this.udi.GetVertIcon()  + outputText + this.udi.GetVertIcon());
                 outputText.Clear();
                 multiplier++;
             }
@@ -139,7 +124,7 @@ namespace DocumentationBuilder {
 
         public static String CheckCommentLength(String passedComment, int TypeOrMethod, TextFramework tf) {
             if (IsPrintOverflow(passedComment, TypeOrMethod)) {
-                return tf.SplitCommentText(passedComment);
+                return tf.FormatOverflowText(passedComment, TypeOrMethod);
             }
             return "";
         }
@@ -180,7 +165,7 @@ namespace DocumentationBuilder {
             constructionRow.Append(this.udi.GetVertIcon());
             constructionRow.Append(TextFramework.LeftAlignmentTextWithPadding(displayString, this.udi.GetMethodWidth()));
             constructionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            constructionRow.Append(GetConstructorDivider());
+            constructionRow.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()));
             return constructionRow.ToString();
         }
 
@@ -189,7 +174,7 @@ namespace DocumentationBuilder {
             constructionRow.Append(this.udi.GetVertIcon());
             constructionRow.Append(TextFramework.LeftAlignmentTextWithPadding(displayString + " -- " + displayComment, this.udi.GetMethodWidth()));
             constructionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            constructionRow.Append(GetConstructorDivider());
+            constructionRow.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()));
             return constructionRow.ToString();
         }
 
@@ -204,20 +189,6 @@ namespace DocumentationBuilder {
             return functionRow.ToString();
         }
 
- /*      public String AssembleFunctionRow(String passedType, String passedMethod, String passedComment) {
-            StringBuilder functionRow = new StringBuilder();
-            functionRow.Append(Environment.NewLine + this.udi.GetVertIcon());
-            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedType, this.udi.GetTypeWidth()));
-            functionRow.Append(this.udi.GetVertIcon());
-            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedMethod, this.udi.GetMethodWidth()));
-            functionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            //functionRow.Append(CreateTypeSpace());
-            functionRow.Append(TextFramework.CheckCommentLength(passedComment, this.udi.GetMethodWidth()));
-          //  functionRow.Append(GetVertIcon() + Environment.NewLine);
-            functionRow.Append(GetHorizontalDivider());
-            return functionRow.ToString();
-        }*/
-
         public String AssembleFunctionRow(String passedType, String passedMethod, String passedComment, TextFramework tf) {
             StringBuilder functionRow = new StringBuilder();
             functionRow.Append(Environment.NewLine + this.udi.GetVertIcon());
@@ -225,20 +196,18 @@ namespace DocumentationBuilder {
             functionRow.Append(this.udi.GetVertIcon());
             functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedMethod.Replace('{', ' ').Trim(), this.udi.GetMethodWidth()));
             functionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            //functionRow.Append(CreateTypeSpace());
             functionRow.Append(TextFramework.CheckCommentLength(passedComment, this.udi.GetMethodWidth(), tf));
-            //  functionRow.Append(GetVertIcon() + Environment.NewLine);
             functionRow.Append(GetHorizontalDivider());
             return functionRow.ToString();
         }
 
         public String GetConstructorSummaryHeader() {
             StringBuilder constructorHeader = new StringBuilder();
-            constructorHeader.Append(CreateMethodLine() + Environment.NewLine);
+            constructorHeader.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + Environment.NewLine);
             constructorHeader.Append(this.udi.GetVertIcon());
             constructorHeader.Append(LeftAlignmentTextWithPadding(GetConstructorMessage(), this.udi.GetMethodWidth()));
             constructorHeader.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            constructorHeader.Append(CreateMethodLine());
+            constructorHeader.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()));
             return constructorHeader.ToString();
         }
 
@@ -254,24 +223,7 @@ namespace DocumentationBuilder {
             return headerMessage.ToString();
         }
 
-        public String GetHorizontalDivider() {
-            return CreateTypeLine() + CreateMethodLine();
-        }
-
-        public String GetConstructorDivider() {
-            return CreateMethodLine();
-        }
-
-        private String CreateTypeLine() {
-            StringBuilder typeLine = new StringBuilder();
-            typeLine.Append(this.udi.GetCrosIcon());
-            for (int i = 0; i < this.udi.GetTypeWidth(); i++) {
-                typeLine.Append(this.udi.GetHoriIcon());
-            }
-            return typeLine.ToString();
-        }
-
-        public String CreateTypeSpace() {
+    /*    public String CreateTypeSpace() {
             StringBuilder typeSpace = new StringBuilder();
             typeSpace.Append(this.udi.GetVertIcon());
             for (int i = 0; i < this.udi.GetTypeWidth(); i++) {
@@ -279,17 +231,22 @@ namespace DocumentationBuilder {
             }
             typeSpace.Append(this.udi.GetVertIcon());
             return typeSpace.ToString();
-        }
-
-     /*   private String AppendSymbolBefore(char passedIcon, String typeOrLine) {
-            return passedIcon + typeOrLine;
-        }
-
-        private String AppendSymbolAfter(char passedIcon, String typeOrLine) {
-            return typeOrLine + passedIcon;
         }*/
 
-        private String CreateMethodLine() {
+        public String GetHorizontalDivider() {
+            return DevelopLine(this.udi.GetHoriIcon(), this.udi.GetTypeWidth()) + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + this.udi.GetCrosIcon();
+        }
+
+        private String DevelopLine(String passedIcon, int TypeOrMethodLength) {
+            StringBuilder typeLine = new StringBuilder();
+            typeLine.Append(this.udi.GetVertIcon());
+            for (int i = 0; i < TypeOrMethodLength; i++) {
+                typeLine.Append(passedIcon);
+            }
+            return typeLine.ToString();
+        }
+
+     /*   private String CreateMethodLine() {
             StringBuilder methodLine = new StringBuilder();
             methodLine.Append(this.udi.GetCrosIcon());
             for (int i = 0; i < this.udi.GetMethodWidth(); i++) {
@@ -297,9 +254,8 @@ namespace DocumentationBuilder {
             }
             methodLine.Append(this.udi.GetCrosIcon());
             return methodLine.ToString();
-        }
+        }*/
 
     }
-
 
 }

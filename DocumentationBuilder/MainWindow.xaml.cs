@@ -29,10 +29,6 @@ namespace DocumentationBuilder {
             System.Windows.Application.Current.Shutdown();
         }
 
-        private void Expander_Expanded(object sender, RoutedEventArgs e) {
-            SizeToContent = SizeToContent.Height + 50;
-        }
-
         private void ComputationButton_Click(object sender, RoutedEventArgs e) {
             string computedText = formatOutputText();
             if (PrintToScreenRadio.IsChecked == true) {
@@ -66,6 +62,7 @@ namespace DocumentationBuilder {
                     displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r), tf));
                 }
             }
+            displayText.Append("Created Date: " + DateTime.Now.ToString("MM/dd/yyyy -- hh:mm:ss"));
             return displayText.ToString();
         }
 
@@ -75,18 +72,14 @@ namespace DocumentationBuilder {
 
 
         private void FilePathBrowseButton_Click(object sender, RoutedEventArgs e) {
-            OpenFileDialog choofdlog = new OpenFileDialog();
-            FilePath.Text = String.Empty;
-            choofdlog.Filter = "All Files (*.*)|*.*";
-            choofdlog.FilterIndex = 1;
-            choofdlog.Multiselect = true;
-
-            if (!choofdlog.ShowDialog() == DialogResult.HasValue) {
-                FilePath.AppendText(choofdlog.FileName);
-            }
+            OpenFileDialog();
         }
 
         private void FilePath_GotFocus(object sender, RoutedEventArgs e) {
+            OpenFileDialog();
+        }
+
+        private void OpenFileDialog() {
             OpenFileDialog choofdlog = new OpenFileDialog();
             FilePath.Text = String.Empty;
             choofdlog.Filter = "All Files (*.*)|*.*";

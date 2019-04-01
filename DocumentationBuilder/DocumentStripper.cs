@@ -10,38 +10,40 @@ namespace DocumentationBuilder {
     class DocumentStripper {
 
         //String[] userText;
-        private String[] userInputRawData;
+        private String[] dividedUserInput;
 
-        public DocumentStripper(String inputText, FormatData fd) {
-            SplitInputText(inputText);
-            ParseUserText(fd);
+        public DocumentStripper(String rawUserText, FormatData fd) {
+            SplitInputText(rawUserText);
+            TrimUserInput();
+            StoreConstructorsAndFunctions(fd);
         }
 
-        public void SplitInputText(String inputText) {
-            userInputRawData = inputText.Split('\n');
+        public void SplitInputText(String rawUserText) { // Divides each line by newline, and places the data in a string array.
+            dividedUserInput = rawUserText.Split('\n');
         }
 
-        private void ParseUserText(FormatData fd) {
-            for (int i = 0; i < userInputRawData.Length; i++) {
-                userInputRawData[i] = userInputRawData[i].Trim();
+        private void TrimUserInput() {
+            for (int i = 0; i < dividedUserInput.Length; i++) { // Iterates through string array and trims blank spaces.
+                dividedUserInput[i] = dividedUserInput[i].Trim();
             }
-            for (int p = 0; p < userInputRawData.Length; p++) {
-                if (userInputRawData[p].Contains("class")) {
-                    fd.SetClassName(userInputRawData[p]);
+        }
+
+        private void StoreConstructorsAndFunctions(FormatData fd) {
+            for (int p = 0; p < dividedUserInput.Length; p++) {
+                if (dividedUserInput[p].Contains("class")) {
+                    fd.SetClassName(dividedUserInput[p]);
                 }
                 String constructorMatch = @"^(public|private).([^\s]+).\(";
                 String functionMatch = @"^(public|private).\w+\s\w+\(";
                 String functionOrConstructor = @"^(public|private)\s\w+.*$";
-                foreach (Match m in Regex.Matches(userInputRawData[p].ToString(), functionOrConstructor)) {
+                foreach (Match m in Regex.Matches(dividedUserInput[p].ToString(), functionOrConstructor)) {
                     if (!m.Value.Contains('=') && Regex.IsMatch(m.Value, constructorMatch)) {
                         fd.SplitConstructorComment(m.Value);
                     }
                     else if (!m.Value.Contains('=') && Regex.IsMatch(m.Value, functionMatch)) {
                         fd.SplitFunctionComment(m.Value);
                     }
-                    //fd.SplitConstructorComment(m.Value);
                 }
-                //  fd.SplitDataAndCategorize();
             }
 
         }

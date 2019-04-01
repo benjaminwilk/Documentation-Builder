@@ -9,23 +9,23 @@ using System.Text.RegularExpressions;
 namespace DocumentationBuilder {
     class FormatData { // This class does all the heavy lifting, it parses the data and places it in the appropriate arrays.
         String ClassName;
-        ArrayList rawConstructorsorMethods;
+        private ArrayList rawConstructorsorMethods;
 
-        ArrayList Constructor;
-        ArrayList ConstructorComment;
+        private ArrayList constructorTitle;
+        private ArrayList constructorComment;
 
-        ArrayList Variables;
+        private ArrayList Variables;
 
-        ArrayList Types;
-        ArrayList MethodName;
-        ArrayList MethodComment;
+        private ArrayList Types;
+        private ArrayList MethodName;
+        private ArrayList MethodComment;
         private Boolean isSet = false;
 
         public FormatData() { // Default constructor; this initializes all the arraylists.
             this.rawConstructorsorMethods = new ArrayList();
 
-            this.Constructor = new ArrayList();
-            this.ConstructorComment = new ArrayList();
+            this.constructorTitle = new ArrayList();
+            this.constructorComment = new ArrayList();
 
             this.Variables = new ArrayList();
 
@@ -75,13 +75,13 @@ namespace DocumentationBuilder {
         }
 
         public void SetConstructor(String passedConstruct) { // Method that saves passed data to constructor dataset.  If only one argument is passed, constructor comment is blank.
-            this.Constructor.Add(passedConstruct.Trim());
-            this.ConstructorComment.Add("");
+            this.constructorTitle.Add(passedConstruct.Trim());
+            this.constructorComment.Add("");
         }
 
         public void SetConstructor(String passedConstruct, String passedComment) { // Similar to the method above, but with a passed comment variable.
-            this.Constructor.Add(passedConstruct.Trim());
-            this.ConstructorComment.Add(passedComment.Trim());
+            this.constructorTitle.Add(passedConstruct.Trim());
+            this.constructorComment.Add(passedComment.Trim());
         }
 
         public void SetVariables(String passedVariable) { // I'm not sure whether I'm going to implement this or not.  This will save passed variables to an arraylist.
@@ -135,17 +135,18 @@ namespace DocumentationBuilder {
         }
 
         public String ReturnConstructor(int positionValue) {
-            return this.Constructor[positionValue].ToString() + " -- " + this.ConstructorComment[positionValue].ToString();
+            return this.constructorTitle[positionValue].ToString() + " -- " + this.constructorComment[positionValue].ToString();
         }
 
         public int ConstructorCount() { // This is an assistance function, this is for a loop or something.
-            return this.Constructor.Count;
+            return this.constructorTitle.Count;
         }
 
         public String GetConstructor(int positionValue) { // Function that gets a constructor saved a specific location.
-            return this.Constructor[positionValue].ToString();
+            return this.constructorTitle[positionValue].ToString();
         }
 
     }
+
 
 }
