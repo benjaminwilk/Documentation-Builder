@@ -62,7 +62,7 @@ namespace DocumentationBuilder {
                     displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r), tf));
                 }
             }
-            displayText.Append("Created Date: " + DateTime.Now.ToString("MM/dd/yyyy -- hh:mm:ss"));
+            displayText.Append(Environment.NewLine + "Created Date: " + DateTime.Now.ToString("MM/dd/yyyy -- hh:mm:ss"));
             return displayText.ToString();
         }
 

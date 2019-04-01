@@ -111,7 +111,7 @@ namespace DocumentationBuilder {
                     outputText.Append(passedComment[character]);
                     character++;
                 } while (character != (typeOrMethodWidth * multiplier));
-                texter.Add(DevelopLine(" ", this.udi.GetTypeWidth()) + this.udi.GetVertIcon()  + outputText + this.udi.GetVertIcon());
+                texter.Add(this.udi.GetVertIcon() + DevelopLine(" ", this.udi.GetTypeWidth()) + this.udi.GetVertIcon()  + outputText + this.udi.GetVertIcon());
                 outputText.Clear();
                 multiplier++;
             }
@@ -203,11 +203,12 @@ namespace DocumentationBuilder {
 
         public String GetConstructorSummaryHeader() {
             StringBuilder constructorHeader = new StringBuilder();
-            constructorHeader.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + Environment.NewLine);
+            constructorHeader.Append("+");
+            constructorHeader.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + "+" + Environment.NewLine);
             constructorHeader.Append(this.udi.GetVertIcon());
             constructorHeader.Append(LeftAlignmentTextWithPadding(GetConstructorMessage(), this.udi.GetMethodWidth()));
             constructorHeader.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            constructorHeader.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()));
+            constructorHeader.Append("+" + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + "+");
             return constructorHeader.ToString();
         }
 
@@ -234,12 +235,11 @@ namespace DocumentationBuilder {
         }*/
 
         public String GetHorizontalDivider() {
-            return DevelopLine(this.udi.GetHoriIcon(), this.udi.GetTypeWidth()) + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + this.udi.GetCrosIcon();
+            return "+" + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetTypeWidth()) + "+" + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + this.udi.GetCrosIcon();
         }
 
         private String DevelopLine(String passedIcon, int TypeOrMethodLength) {
             StringBuilder typeLine = new StringBuilder();
-            typeLine.Append(this.udi.GetVertIcon());
             for (int i = 0; i < TypeOrMethodLength; i++) {
                 typeLine.Append(passedIcon);
             }
