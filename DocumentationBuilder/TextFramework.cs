@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -94,33 +95,51 @@ namespace DocumentationBuilder {
             return false;
         }
 
-        public String splitCommentText(String passedComment) {
-            StringBuilder outputText = new StringBuilder();
-            String builder = "";
-            int characterCount = 0;
-            for (int lineCount = 0; lineCount < (passedComment.Length/this.udi.GetMethodWidth()); lineCount++) {
-                for (int i = 0; i < udi.GetMethodWidth(); i++) {
-
-                    //buildLine.AppendLine();
-                    //buildLine[lineCount] += passedComment[i];
-                    if (passedComment.Length < characterCount) {
-                        builder += "";
-                    } else {
-                        builder += passedComment[characterCount];
+        public String FunctionOverflowSplit(String passedFunction, Boolean printOverflow) {
+            if (printOverflow) {
+                StringBuilder functionOverflow = new StringBuilder();
+                String builder = "";
+                int characterCount = 0;
+                for (int lineCount = 0; lineCount < (passedFunction.Length / this.udi.GetMethodWidth()); lineCount++) {
+                    for (int i = 0; i < udi.GetMethodWidth(); i++) {
                     }
-                    characterCount++;
                 }
-                outputText.Append(CreateTypeSpace());
-                outputText.Append(LeftAlignmentTextWithPadding(builder, udi.GetMethodWidth()));
-                outputText.Append(udi.GetVertIcon() + Environment.NewLine);
-                builder = String.Empty;
+            } else {
+                return passedFunction;
             }
-            return outputText.ToString();
+            return passedFunction;
+        }
+
+        public String SplitCommentText(String passedComment) {
+            StringBuilder outputText = new StringBuilder();
+            ArrayList texter = new ArrayList();
+            StringBuilder outputter = new StringBuilder();
+            if (passedComment.Length % this.udi.GetMethodWidth() != 0) {
+                do {
+                    passedComment += " ";
+                } while (passedComment.Length % this.udi.GetMethodWidth() != 0);
+            }
+            int character = 0;
+            int multiplier = 1;
+            for (int row = 0; row < passedComment.Length / this.udi.GetMethodWidth(); row++) {
+                do {
+                    outputText.Append(passedComment[character]);
+                    character++;
+                } while (character != (this.udi.GetMethodWidth() * multiplier));
+                texter.Add(CreateTypeSpace() + outputText + "|");
+                outputText.Clear();
+                multiplier++;
+            }
+
+            for (int lines = 0; lines < texter.Count; lines++) {
+                outputter.Append(texter[lines] + Environment.NewLine);
+            }
+            return outputter.ToString();
         }
 
         public static String CheckCommentLength(String passedComment, int TypeOrMethod, TextFramework tf) {
             if (IsPrintOverflow(passedComment, TypeOrMethod)) {
-                return tf.splitCommentText(passedComment);
+                return tf.SplitCommentText(passedComment);
             }
             return "";
         }
@@ -280,67 +299,7 @@ namespace DocumentationBuilder {
             return methodLine.ToString();
         }
 
-        }
-
-    class UserDefinedIcons {
-        private String vertIcon;
-        private String horiIcon;
-        private String crosIcon;
-        private int typeWidth;
-        private int methodWidth;
-        
-        public UserDefinedIcons() {
-
-        }
-
-        public UserDefinedIcons(String userDefinedVert, String userDefinedHori, String userDefinedCros, int userDefinedType, int userDefinedMethod) {
-            SetVertIcon(userDefinedVert);
-            SetHoriIcon(userDefinedHori);
-            SetCrosIcon(userDefinedCros);
-            SetTypeWidth(userDefinedType);
-            SetMethodWidth(userDefinedMethod);
-        }
-
-        public void SetVertIcon(String passedVertIcon) {
-            this.vertIcon = passedVertIcon;
-        }
-
-        public void SetHoriIcon(String passedHoriIcon) {
-            this.horiIcon = passedHoriIcon;
-        }
-
-        public void SetCrosIcon(String passedCrosIcon) {
-            this.crosIcon = passedCrosIcon;
-        }
-
-        public void SetTypeWidth(int passedTypeWidth) {
-            this.typeWidth = passedTypeWidth;
-        }
-
-        public void SetMethodWidth(int passedMethodWidth) {
-            this.methodWidth = passedMethodWidth;
-        }
-
-        public String GetVertIcon() {
-            return this.vertIcon;
-        }
-
-        public String GetHoriIcon() {
-            return this.horiIcon;
-        }
-
-        public String GetCrosIcon() {
-            return this.crosIcon;
-        }
-
-        public int GetTypeWidth() {
-            return this.typeWidth;
-        }
-
-        public int GetMethodWidth() {
-            return this.methodWidth;
-        }
-
     }
+
 
 }
