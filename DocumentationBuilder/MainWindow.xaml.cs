@@ -6,14 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DocumentationBuilder {
     /// <summary>
@@ -35,7 +27,7 @@ namespace DocumentationBuilder {
                 this.InputBox.Text = String.Empty;
                 InputBox.AppendText(computedText);
             } else {
-                if (PrintToFileRadio.IsChecked == true && FilePath.Text == "Filepath" || FilePath.Text == "") {
+                if (PrintToFileRadio.IsChecked == true && FilePath.Text == "Filepath" || String.IsNullOrEmpty(FilePath.Text)) {
                     System.Windows.MessageBox.Show("Print to file chosen, but no file path was given", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
                 } else {
                     File.WriteAllText(FilePath.Text, computedText);
@@ -48,7 +40,7 @@ namespace DocumentationBuilder {
             TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
             DocumentStripper ds = new DocumentStripper(InputBox.Text, fd);
             StringBuilder displayText = new StringBuilder();
-            if (fd.IsClassContainerDescriptionSet() == false) {
+            if (!fd.IsClassContainerDescriptionSet()) {
                 displayText.Append(fd.ReturnClassContainerName());
             } else {
                 displayText.Append(fd.GetClassContainerName() + " -- " + fd.GetClassContainerDescription());
@@ -56,7 +48,7 @@ namespace DocumentationBuilder {
             }
             displayText.Append(tf.GetConstructorSummaryHeader() + Environment.NewLine);
             for (int p = 0; p < fd.ConstructorCount(); p++) {
-                if (fd.IsCommentSet(p) == false) {
+                if (!fd.IsCommentSet(p)) {
                     displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p)));
                 } else {
                     displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p), fd.GetConstructorComment(p)));
@@ -64,7 +56,7 @@ namespace DocumentationBuilder {
             }
             displayText.Append(Environment.NewLine + Environment.NewLine + tf.GetMethodSummaryHeader());
             for (int r = 0; r < fd.GetMethodCount(); r++) {
-                if (fd.GetMethodComment(r).Equals("")) {
+                if (String.IsNullOrEmpty(fd.GetMethodComment(r))) {
                     displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r)));
                 } else {
                     displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r), tf));

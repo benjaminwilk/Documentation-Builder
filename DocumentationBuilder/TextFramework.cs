@@ -88,6 +88,17 @@ namespace DocumentationBuilder {
             return leftAlign.ToString();
         }
 
+        public static String LeftAlignmentTextWithPadding(String passedText, int TypeOrMethod, String endIcons) {
+            StringBuilder leftAlign = new StringBuilder();
+            leftAlign.Append(endIcons);
+            leftAlign.Append(passedText);
+            for (int i = 1; i <= TypeOrMethod - passedText.Length; i++) {
+                leftAlign.Append(" ");
+            }
+            leftAlign.Append(endIcons);
+            return leftAlign.ToString();
+        }
+
         public static Boolean IsPrintOverflow(String passedText, int TypeOrMethod) {
             if (passedText.Length > TypeOrMethod) {
                 return true;
@@ -122,6 +133,34 @@ namespace DocumentationBuilder {
             return outputter.ToString();
         }
 
+        public String FormatConstructorText(String passedComment, int typeOrMethodWidth) {
+            StringBuilder outputText = new StringBuilder();
+            ArrayList texter = new ArrayList();
+            StringBuilder outputter = new StringBuilder();
+            if (passedComment.Length % typeOrMethodWidth != 0) {
+                do {
+                    passedComment += " ";
+                } while (passedComment.Length % typeOrMethodWidth != 0);
+            }
+            int character = 0;
+            int multiplier = 1;
+            for (int row = 0; row < passedComment.Length / typeOrMethodWidth; row++) {
+                do {
+                    outputText.Append(passedComment[character]);
+                    character++;
+                } while (character != (typeOrMethodWidth * multiplier));
+                texter.Add(this.udi.GetVertIcon() + outputText + this.udi.GetVertIcon());
+                outputText.Clear();
+                multiplier++;
+            }
+
+            for (int lines = 0; lines < texter.Count; lines++) {
+                outputter.Append(texter[lines] + Environment.NewLine);
+            }
+            return outputter.ToString();
+        }
+
+
         public static String CheckCommentLength(String passedComment, int TypeOrMethod, TextFramework tf) {
             if (IsPrintOverflow(passedComment, TypeOrMethod)) {
                 return tf.FormatOverflowText(passedComment, TypeOrMethod);
@@ -148,42 +187,24 @@ namespace DocumentationBuilder {
             return origMethodWidth;
         }
 
-        private static String GetMethodMessage() {
-            return "Modifier and Type";
-        }
-
-        private static String GetConstructorMessage() {
-            return "Constructor and Description";
-        }
-
-        private static String GetMethodDescriptionMessage() {
-            return "Method and Description";
-        }
-
         public String AssembleConstructorRow(String displayString) {
             StringBuilder constructionRow = new StringBuilder();
-            constructionRow.Append(this.udi.GetVertIcon());
-            constructionRow.Append(TextFramework.LeftAlignmentTextWithPadding(displayString, this.udi.GetMethodWidth()));
-            constructionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            constructionRow.Append(this.udi.GetCrosIcon() + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + this.udi.GetCrosIcon());
+            constructionRow.Append(LeftAlignmentTextWithPadding(displayString, this.udi.GetMethodWidth(), this.udi.GetVertIcon()) + Environment.NewLine);
+            constructionRow.Append(CreateLine(this.udi.GetMethodWidth(), this.udi.GetHoriIcon(), this.udi.GetCrosIcon()));
             return constructionRow.ToString();
         }
 
         public String AssembleConstructorRow(String displayString, String displayComment) {
             StringBuilder constructionRow = new StringBuilder();
-            constructionRow.Append(this.udi.GetVertIcon());
-            constructionRow.Append(TextFramework.LeftAlignmentTextWithPadding(displayString + " -- " + displayComment, this.udi.GetMethodWidth()));
-            constructionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            constructionRow.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()));
+            constructionRow.Append(LeftAlignmentTextWithPadding(FormatConstructorText(displayString + " -- " + displayComment, this.udi.GetMethodWidth()), this.udi.GetMethodWidth()));
+            constructionRow.Append(CreateLine(this.udi.GetMethodWidth(), this.udi.GetHoriIcon(), this.udi.GetCrosIcon()));
             return constructionRow.ToString();
         }
 
         public String AssembleFunctionRow(String passedType, String passedMethod) {
             StringBuilder functionRow = new StringBuilder();
-            functionRow.Append(Environment.NewLine + this.udi.GetVertIcon());
-            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedType, this.udi.GetTypeWidth()));
-            functionRow.Append(this.udi.GetVertIcon());
-            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedMethod.Replace('{', ' ').Trim(), this.udi.GetMethodWidth()));
+            functionRow.Append(Environment.NewLine + LeftAlignmentTextWithPadding(passedType, this.udi.GetTypeWidth(), this.udi.GetVertIcon()));
+            functionRow.Append(LeftAlignmentTextWithPadding(passedMethod.Replace('{', ' ').Trim(), this.udi.GetMethodWidth()));
             functionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
             functionRow.Append(GetHorizontalDivider());
             return functionRow.ToString();
@@ -192,33 +213,26 @@ namespace DocumentationBuilder {
         public String AssembleFunctionRow(String passedType, String passedMethod, String passedComment, TextFramework tf) {
             StringBuilder functionRow = new StringBuilder();
             functionRow.Append(Environment.NewLine + this.udi.GetVertIcon());
-            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedType, this.udi.GetTypeWidth()));
-            functionRow.Append(this.udi.GetVertIcon());
-            functionRow.Append(TextFramework.LeftAlignmentTextWithPadding(passedMethod.Replace('{', ' ').Trim(), this.udi.GetMethodWidth()));
-            functionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            functionRow.Append(TextFramework.CheckCommentLength(passedComment, this.udi.GetMethodWidth(), tf));
+            functionRow.Append(LeftAlignmentTextWithPadding(passedType, this.udi.GetTypeWidth()));
+            functionRow.Append(LeftAlignmentTextWithPadding(passedMethod.Replace('{', ' ').Trim(), this.udi.GetMethodWidth(), this.udi.GetVertIcon()) + Environment.NewLine);
+            functionRow.Append(CheckCommentLength(passedComment, this.udi.GetMethodWidth(), tf));
             functionRow.Append(GetHorizontalDivider());
             return functionRow.ToString();
         }
 
         public String GetConstructorSummaryHeader() {
             StringBuilder constructorHeader = new StringBuilder();
-            constructorHeader.Append("+");
-            constructorHeader.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + "+" + Environment.NewLine);
-            constructorHeader.Append(this.udi.GetVertIcon());
-            constructorHeader.Append(LeftAlignmentTextWithPadding(GetConstructorMessage(), this.udi.GetMethodWidth()));
-            constructorHeader.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            constructorHeader.Append("+" + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + "+");
+            constructorHeader.Append(CreateLine(this.udi.GetMethodWidth(), this.udi.GetHoriIcon(), this.udi.GetCrosIcon()) + Environment.NewLine);
+            constructorHeader.Append(LeftAlignmentTextWithPadding(DisplayHeaders.GetConstructorMessage(), this.udi.GetMethodWidth(), this.udi.GetVertIcon()) + Environment.NewLine);
+            constructorHeader.Append(CreateLine(this.udi.GetMethodWidth(), this.udi.GetHoriIcon(), this.udi.GetCrosIcon()));
             return constructorHeader.ToString();
         }
 
         public String GetMethodSummaryHeader() {
             StringBuilder headerMessage = new StringBuilder();
             headerMessage.Append(GetHorizontalDivider() + Environment.NewLine);
-            headerMessage.Append(this.udi.GetVertIcon());
-            headerMessage.Append(LeftAlignmentTextWithPadding(GetMethodMessage(), this.udi.GetTypeWidth()));
-            headerMessage.Append(this.udi.GetVertIcon());
-            headerMessage.Append(LeftAlignmentTextWithPadding(GetMethodDescriptionMessage(), this.udi.GetMethodWidth()));
+            headerMessage.Append(LeftAlignmentTextWithPadding(DisplayHeaders.GetMethodMessage(), this.udi.GetTypeWidth(), this.udi.GetVertIcon()));
+            headerMessage.Append(LeftAlignmentTextWithPadding(DisplayHeaders.GetMethodDescriptionMessage(), this.udi.GetMethodWidth()));
             headerMessage.Append(this.udi.GetVertIcon() + Environment.NewLine);
             headerMessage.Append(GetHorizontalDivider());
             return headerMessage.ToString();
@@ -235,7 +249,7 @@ namespace DocumentationBuilder {
         }*/
 
         public String GetHorizontalDivider() {
-            return "+" + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetTypeWidth()) + "+" + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + this.udi.GetCrosIcon();
+            return this.udi.GetCrosIcon() + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetTypeWidth()) + this.udi.GetCrosIcon() + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + this.udi.GetCrosIcon();
         }
 
         private String DevelopLine(String passedIcon, int TypeOrMethodLength) {
@@ -246,15 +260,39 @@ namespace DocumentationBuilder {
             return typeLine.ToString();
         }
 
-     /*   private String CreateMethodLine() {
+        private String CreateLine(int lineLength) {
             StringBuilder methodLine = new StringBuilder();
             methodLine.Append(this.udi.GetCrosIcon());
-            for (int i = 0; i < this.udi.GetMethodWidth(); i++) {
+            for (int i = 0; i < lineLength; i++) {
                 methodLine.Append(this.udi.GetHoriIcon());
             }
             methodLine.Append(this.udi.GetCrosIcon());
             return methodLine.ToString();
-        }*/
+        }
+
+        private String CreateLine(int lineLength, String printIcon, String endIcons) {
+            StringBuilder methodLine = new StringBuilder();
+            methodLine.Append(endIcons);
+            for (int i = 0; i < lineLength; i++) {
+                methodLine.Append(printIcon);
+            }
+            methodLine.Append(endIcons);
+            return methodLine.ToString();
+        }
+
+        private String CreateLine(int lineLength, String printIcon, String endIcons, Boolean beforeOrAfter) { // I know this isn't optimal, but I'm using a boolean.  True is Before, and False is After.
+            StringBuilder methodLine = new StringBuilder();
+            if (beforeOrAfter) {
+                methodLine.Append(endIcons);
+            }
+            for (int i = 0; i < lineLength; i++) {
+                methodLine.Append(printIcon);
+            }
+            if (!beforeOrAfter) {
+                methodLine.Append(endIcons);
+            }
+            return methodLine.ToString();
+        }
 
     }
 

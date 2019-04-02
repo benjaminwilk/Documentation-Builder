@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="ClassContainer.cs" />
     <Compile Include="ConstructorData.cs" />
+    <Compile Include="DisplayHeaders.cs" />
     <Compile Include="FormatData.cs" />
     <Compile Include="TextFramework.cs" />
     <Compile Include="UserDefinedIcons.cs" />

@@ -29,10 +29,11 @@ namespace DocumentationBuilder {
         }
 
         private void StoreConstructorsAndFunctions(FormatData fd) {
+            String checkForComment = @"^(class).*//.*";
             for (int p = 0; p < dividedUserInput.Length; p++) {
                 if (dividedUserInput[p].Contains("class")) {
                     String[] titleAndDescription;
-                    Regex rgx = new Regex(@"^(class).*//.*");
+                    Regex rgx = new Regex(checkForComment);
                     Match match = rgx.Match(dividedUserInput[p]);
                     if (match.Success) {
                         //foreach (Match m in Regex.Matches(dividedUserInput[p].ToString(), @"^(class).*//.*")){
