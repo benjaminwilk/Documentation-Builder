@@ -48,11 +48,19 @@ namespace DocumentationBuilder {
             TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
             DocumentStripper ds = new DocumentStripper(InputBox.Text, fd);
             StringBuilder displayText = new StringBuilder();
-            //InputBox.AppendText(tf.GetConstructorSummaryHeader() + Environment.NewLine);
-            displayText.Append(fd.ReturnClassName());
+            if (fd.IsClassContainerDescriptionSet() == false) {
+                displayText.Append(fd.ReturnClassContainerName());
+            } else {
+                displayText.Append(fd.GetClassContainerName() + " -- " + fd.GetClassContainerDescription());
+                displayText.Append(Environment.NewLine + Environment.NewLine);
+            }
             displayText.Append(tf.GetConstructorSummaryHeader() + Environment.NewLine);
             for (int p = 0; p < fd.ConstructorCount(); p++) {
-                displayText.Append(tf.AssembleConstructorRow(fd.GetConstructor(p)));
+                if (fd.IsCommentSet(p) == false) {
+                    displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p)));
+                } else {
+                    displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p), fd.GetConstructorComment(p)));
+                }
             }
             displayText.Append(Environment.NewLine + Environment.NewLine + tf.GetMethodSummaryHeader());
             for (int r = 0; r < fd.GetMethodCount(); r++) {
@@ -62,12 +70,20 @@ namespace DocumentationBuilder {
                     displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r), tf));
                 }
             }
-            displayText.Append(Environment.NewLine + "Created Date: " + DateTime.Now.ToString("MM/dd/yyyy -- hh:mm:ss"));
+            displayText.Append(DisplayCurrentDate());
             return displayText.ToString();
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e) {
             Application.Current.Shutdown();
+        }
+
+        private String DisplayCurrentDate() {
+            return Environment.NewLine + "Created Date: " + GetCurrentDate();
+        }
+
+        private static String GetCurrentDate() {
+            return DateTime.Now.ToString("MM/dd/yyyy -- hh:mm:ss tt");
         }
 
 

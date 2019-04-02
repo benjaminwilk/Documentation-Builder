@@ -165,7 +165,7 @@ namespace DocumentationBuilder {
             constructionRow.Append(this.udi.GetVertIcon());
             constructionRow.Append(TextFramework.LeftAlignmentTextWithPadding(displayString, this.udi.GetMethodWidth()));
             constructionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            constructionRow.Append(DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()));
+            constructionRow.Append(this.udi.GetCrosIcon() + DevelopLine(this.udi.GetHoriIcon(), this.udi.GetMethodWidth()) + this.udi.GetCrosIcon());
             return constructionRow.ToString();
         }
 

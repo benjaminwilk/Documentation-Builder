@@ -31,7 +31,16 @@ namespace DocumentationBuilder {
         private void StoreConstructorsAndFunctions(FormatData fd) {
             for (int p = 0; p < dividedUserInput.Length; p++) {
                 if (dividedUserInput[p].Contains("class")) {
-                    fd.SetClassName(dividedUserInput[p]);
+                    String[] titleAndDescription;
+                    Regex rgx = new Regex(@"^(class).*//.*");
+                    Match match = rgx.Match(dividedUserInput[p]);
+                    if (match.Success) {
+                        //foreach (Match m in Regex.Matches(dividedUserInput[p].ToString(), @"^(class).*//.*")){
+                        titleAndDescription = dividedUserInput[p].Split(new string[] { "//" }, StringSplitOptions.None);
+                        fd.SetClassContainerNameAndDescription(titleAndDescription[0], titleAndDescription[1]);
+                    } else {
+                        fd.SetClassContainerName(dividedUserInput[0]);
+                    }
                 }
                 String constructorMatch = @"^(public|private).([^\s]+).\(";
                 String functionMatch = @"^(public|private).\w+\s\w+\(";
