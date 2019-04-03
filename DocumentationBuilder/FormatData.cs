@@ -10,7 +10,7 @@ namespace DocumentationBuilder {
     class FormatData { // This class does all the heavy lifting, it parses the data and places it in the appropriate arrays.
         private ClassContainer classContain;
         private ConstructorData constructData;
-        private ArrayList rawConstructorsorMethods;
+//        private ArrayList rawConstructorsorMethods;
 
         private ArrayList Variables;
 
@@ -20,7 +20,7 @@ namespace DocumentationBuilder {
 
         public FormatData() { // Default constructor; this initializes all the arraylists.
             this.classContain = new ClassContainer();
-            this.rawConstructorsorMethods = new ArrayList();
+       //     this.rawConstructorsorMethods = new ArrayList();
 
             this.constructData = new ConstructorData();
 

@@ -51,7 +51,7 @@ namespace DocumentationBuilder {
                 if (!fd.IsCommentSet(p)) {
                     displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p)));
                 } else {
-                    displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p), fd.GetConstructorComment(p)));
+                    displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p) + " -- " + fd.GetConstructorComment(p)));
                 }
             }
             displayText.Append(Environment.NewLine + Environment.NewLine + tf.GetMethodSummaryHeader());
@@ -59,7 +59,7 @@ namespace DocumentationBuilder {
                 if (String.IsNullOrEmpty(fd.GetMethodComment(r))) {
                     displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r)));
                 } else {
-                    displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r), tf));
+                    displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r)));
                 }
             }
             displayText.Append(DisplayCurrentDate());
@@ -71,11 +71,7 @@ namespace DocumentationBuilder {
         }
 
         private String DisplayCurrentDate() {
-            return Environment.NewLine + "Created Date: " + GetCurrentDate();
-        }
-
-        private static String GetCurrentDate() {
-            return DateTime.Now.ToString("MM/dd/yyyy -- hh:mm:ss tt");
+            return Environment.NewLine + "Created Date: " + DisplayHeaders.GetCurrentDate();
         }
 
 
@@ -101,43 +97,43 @@ namespace DocumentationBuilder {
 
         private void WidthResetButton_Click(object sender, RoutedEventArgs e) {
             VerticalIconInput.Text = String.Empty;
-            VerticalIconInput.Text = "" + TextFramework.GetOriginalVertIcon();
+            VerticalIconInput.Text = "" + DisplayHeaders.GetOriginalVertIcon();
             HorizontalIconInput.Text = String.Empty;
-            HorizontalIconInput.Text = "" + TextFramework.GetOriginalHoriIcon();
+            HorizontalIconInput.Text = "" + DisplayHeaders.GetOriginalHoriIcon();
             CrossIconInput.Text = String.Empty;
-            CrossIconInput.Text = "" + TextFramework.GetOriginalCrosIcon();
+            CrossIconInput.Text = "" + DisplayHeaders.GetOriginalCrosIcon();
         }
 
         private void IconsResetButton_Click(object sender, RoutedEventArgs e) {
             TypeWidthInput.Text = String.Empty;
-            TypeWidthInput.Text = "" + TextFramework.GetOriginalTypeWidth();
+            TypeWidthInput.Text = "" + DisplayHeaders.GetOriginalTypeWidth();
             MethodWidthInput.Text = String.Empty;
-            MethodWidthInput.Text = "" + TextFramework.GetOriginalMethodWidth();
+            MethodWidthInput.Text = "" + DisplayHeaders.GetOriginalMethodWidth();
         }
 
         private void VerticalIconInput_Initialized(object sender, EventArgs e) {
-            VerticalIconInput.Text = "" + TextFramework.GetOriginalVertIcon();
+            VerticalIconInput.Text = "" + DisplayHeaders.GetOriginalVertIcon();
         }
 
         private void HorizontalIconInput_Initialized(object sender, EventArgs e) {
-            HorizontalIconInput.Text = "" + TextFramework.GetOriginalHoriIcon();
+            HorizontalIconInput.Text = "" + DisplayHeaders.GetOriginalHoriIcon();
         }
 
         private void CrossIconInput_Initialized(object sender, EventArgs e) {
-            CrossIconInput.Text = "" + TextFramework.GetOriginalCrosIcon();
+            CrossIconInput.Text = "" + DisplayHeaders.GetOriginalCrosIcon();
         }
 
         private void TypeWidthInput_Initialized(object sender, EventArgs e) {
-            TypeWidthInput.Text = "" + TextFramework.GetOriginalTypeWidth();
+            TypeWidthInput.Text = "" + DisplayHeaders.GetOriginalTypeWidth();
         }
 
         private void MethodWidthInput_Initialized(object sender, EventArgs e) {
-            MethodWidthInput.Text = "" + TextFramework.GetOriginalMethodWidth();
+            MethodWidthInput.Text = "" + DisplayHeaders.GetOriginalMethodWidth();
         }
 
         private void VerticalIconInput_LostFocus(object sender, RoutedEventArgs e) {
             if (VerticalIconInput.Text == "") {
-                VerticalIconInput.Text = "" + TextFramework.GetOriginalVertIcon();
+                VerticalIconInput.Text = "" + DisplayHeaders.GetOriginalVertIcon();
             }
         }
 
@@ -155,13 +151,13 @@ namespace DocumentationBuilder {
 
         private void HorizontalIconInput_LostFocus(object sender, RoutedEventArgs e) {
             if (HorizontalIconInput.Text == "") {
-                HorizontalIconInput.Text = "" + TextFramework.GetOriginalHoriIcon();
+                HorizontalIconInput.Text = "" + DisplayHeaders.GetOriginalHoriIcon();
             }
         }
 
         private void CrossIconInput_LostFocus(object sender, RoutedEventArgs e) {
             if (CrossIconInput.Text == "") {
-                CrossIconInput.Text = "" + TextFramework.GetOriginalCrosIcon();
+                CrossIconInput.Text = "" + DisplayHeaders.GetOriginalCrosIcon();
             }
         }
 
@@ -175,13 +171,13 @@ namespace DocumentationBuilder {
 
         private void TypeWidthInput_LostFocus(object sender, RoutedEventArgs e) {
             if (TypeWidthInput.Text == "") {
-                TypeWidthInput.Text = "" + TextFramework.GetOriginalTypeWidth();
+                TypeWidthInput.Text = "" + DisplayHeaders.GetOriginalTypeWidth();
             }
         }
 
         private void MethodWidthInput_LostFocus(object sender, RoutedEventArgs e) {
             if (MethodWidthInput.Text == "") {
-                MethodWidthInput.Text = "" + TextFramework.GetOriginalMethodWidth();
+                MethodWidthInput.Text = "" + DisplayHeaders.GetOriginalMethodWidth();
             }
         }
 
