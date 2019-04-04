@@ -29,8 +29,8 @@ namespace DocumentationBuilder {
 
         public String GetName() { // This returns the class name, less attractive version.
             if (isSet == true) {
-                String[] headerData = this.name.ToString().Split(' ');
-                return headerData[1];
+                // String[] headerData = this.name.ToString().Split(' ');
+                return this.name;//[1];
             }
             return "Error: No Class Name Set";
         }

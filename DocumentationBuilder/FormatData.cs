@@ -10,13 +10,11 @@ namespace DocumentationBuilder {
     class FormatData { // This class does all the heavy lifting, it parses the data and places it in the appropriate arrays.
         private ClassContainer classContain;
         private ConstructorData constructData;
-//        private ArrayList rawConstructorsorMethods;
+        //        private ArrayList rawConstructorsorMethods;
+
+        private FunctionData functionData;
 
         private ArrayList Variables;
-
-        private ArrayList Types;
-        private ArrayList MethodName;
-        private ArrayList MethodComment;
 
         public FormatData() { // Default constructor; this initializes all the arraylists.
             this.classContain = new ClassContainer();
@@ -24,20 +22,18 @@ namespace DocumentationBuilder {
 
             this.constructData = new ConstructorData();
 
+            this.functionData = new FunctionData();
+
             this.Variables = new ArrayList();
 
-            this.Types = new ArrayList();
-            this.MethodName = new ArrayList();
-            this.MethodComment = new ArrayList();
         }
 
         public void SplitConstructorComment(String passedRawData) { // I'm not entirely sure what this does exactly, to be honest.  passedRawData is saved to rawConstructorsorMethods
-            String[] visibilityAndConstructor = passedRawData.Split(new[] { ' ' }, 3);
             if (Regex.IsMatch(passedRawData, @"//.*$")) {
                 String[] constructorAndComment = passedRawData.Split(new string[] { "//" }, StringSplitOptions.None);
-                SetConstructor(visibilityAndConstructor[1], constructorAndComment[1]);
+                SetConstructor(constructorAndComment[1].Replace("{", ""), constructorAndComment[1]);
             } else {
-                SetConstructor(visibilityAndConstructor[1]);
+                SetConstructor(passedRawData.Replace("{", ""));
             }
         }
 
@@ -45,10 +41,10 @@ namespace DocumentationBuilder {
             String[] visibilityAndFunction = passedRawData.Split(new[] { ' ' }, 3);
             if (Regex.IsMatch(passedRawData, @"//.*$")) {
                 String[] functionAndComment = visibilityAndFunction[2].Split(new string[] { "//" }, StringSplitOptions.None);
-                SetDataLine(visibilityAndFunction[1], functionAndComment[0], functionAndComment[1]);
+                this.functionData.SetDataLine(visibilityAndFunction[1], functionAndComment[0], functionAndComment[1]);
             } else {
                 String[] removeParentheses = visibilityAndFunction[2].Split('{');
-                SetDataLine(visibilityAndFunction[1], removeParentheses[0]);
+                this.functionData.SetDataLine(visibilityAndFunction[1], removeParentheses[0]);
             }
         }
 
@@ -78,38 +74,34 @@ namespace DocumentationBuilder {
             return this.Variables[passedCount].ToString();
         }
 
-        public void SetDataLine(String passedType, String passedMethod, String passedComment) {
-            this.Types.Add(passedType.Trim());
-            this.MethodName.Add(passedMethod.Trim());
-            this.MethodComment.Add(passedComment.Trim());
-        }
+        // ********* Function Data ********
 
         public void SetDataLine(String passedType, String passedMethod) {
-            this.Types.Add(passedType.Trim());
-            this.MethodName.Add(passedMethod.Trim());
-            this.MethodComment.Add("");
+            this.functionData.SetDataLine(passedType, passedMethod, "");
+        }
+
+        public void SetDataLine(String passedType, String passedMethod, String passedComment) {
+            this.functionData.SetDataLine(passedType, passedMethod, passedComment);
         }
 
         public void SetDataLine(String passedMethod) {
-            this.Types.Add("");
-            this.MethodName.Add(passedMethod.Trim());
-            this.MethodComment.Add("");
+            this.functionData.SetDataLine("", passedMethod, "");
         }
 
-        public int GetMethodCount() { // Another assistance function, that returns the size of the arraylist.
-            return this.MethodName.Count;
+        public int GetFunctionCount() { // Another assistance function, that returns the size of the arraylist.
+            return this.functionData.GetCount();
         }
 
-        public String GetMethod(int positionValue) { // Function that gets a method saved at a specific location.
-            return this.MethodName[positionValue].ToString();
+        public String GetFunctionType(int positionValue) { // Function that gets a type saved at a specific location.
+            return this.functionData.GetType(positionValue);
         }
 
-        public String GetType(int positionValue) { // Function that gets a type saved at a specific location.
-            return this.Types[positionValue].ToString();
+        public String GetFunctionTitle(int positionValue) { // Function that gets a method saved at a specific location.
+            return this.functionData.GetTitle(positionValue);
         }
 
-        public String GetMethodComment(int positionValue) {
-            return this.MethodComment[positionValue].ToString();
+        public String GetFunctionComment(int positionValue) {
+            return this.functionData.GetComment(positionValue);
         }
 
         // ********* Constructor Data **********
@@ -175,6 +167,53 @@ namespace DocumentationBuilder {
 
         public Boolean IsClassContainerDescriptionSet() {
             return this.classContain.IsDescriptionSet();
+        }
+
+    }
+
+    class FunctionData {
+        private ArrayList type;
+        private ArrayList title;
+        private ArrayList comment;
+
+        public FunctionData() {
+            this.type = new ArrayList();
+            this.title = new ArrayList();
+            this.comment = new ArrayList();
+        }
+
+        public void SetDataLine(String passedType, String passedMethod) {
+            this.type.Add(passedType.Trim());
+            this.title.Add(passedMethod.Trim());
+            this.comment.Add("");
+        }
+
+        public void SetDataLine(String passedType, String passedMethod, String passedComment) {
+            this.type.Add(passedType.Trim());
+            this.title.Add(passedMethod.Trim());
+            this.comment.Add(passedComment.Trim());
+        }
+
+        public void SetDataLine(String passedMethod) {
+            this.type.Add("");
+            this.title.Add(passedMethod.Trim());
+            this.comment.Add("");
+        }
+
+        public int GetCount() { // Another assistance function, that returns the size of the arraylist.
+            return this.title.Count;
+        }
+
+        public String GetType(int positionValue) { // Function that gets a type saved at a specific location.
+            return this.type[positionValue].ToString();
+        }
+
+        public String GetTitle(int positionValue) { // Function that gets a method saved at a specific location.
+            return this.title[positionValue].ToString();
+        }
+
+        public String GetComment(int positionValue) {
+            return this.comment[positionValue].ToString();
         }
 
     }

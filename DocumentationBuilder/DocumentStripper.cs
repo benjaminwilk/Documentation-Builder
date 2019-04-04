@@ -15,6 +15,7 @@ namespace DocumentationBuilder {
         public DocumentStripper(String rawUserText, FormatData fd) {
             SplitInputText(rawUserText);
             TrimUserInput();
+            SetClass(fd);
             StoreConstructorsAndFunctions(fd);
         }
 
@@ -28,22 +29,28 @@ namespace DocumentationBuilder {
             }
         }
 
-        private void StoreConstructorsAndFunctions(FormatData fd) {
-            String checkForComment = @"^(class).*//.*";
+        private void SetClass(FormatData fd) {
+            String classRegex = @"^(class)[ ](\w+)[ ]\{.*";
+            Regex rgx = new Regex(classRegex);
+
             for (int p = 0; p < dividedUserInput.Length; p++) {
-                if (dividedUserInput[p].Contains("class")) {
-                    String[] titleAndDescription;
-                    Regex rgx = new Regex(checkForComment);
-                    Match match = rgx.Match(dividedUserInput[p]);
-                    if (match.Success) {
-                        //foreach (Match m in Regex.Matches(dividedUserInput[p].ToString(), @"^(class).*//.*")){
-                        titleAndDescription = dividedUserInput[p].Split(new string[] { "//" }, StringSplitOptions.None);
-                        fd.SetClassContainerNameAndDescription(titleAndDescription[0], titleAndDescription[1]);
+                Match match = rgx.Match(dividedUserInput[p]);
+                if (match.Success) {
+                    if (dividedUserInput[p].Contains("//")) {
+                        String[] splitClassTitleComment = dividedUserInput[p].Split(new string[] { "//" }, StringSplitOptions.None);
+                        fd.SetClassContainerNameAndDescription(dividedUserInput[0], dividedUserInput[1]);
                     } else {
-                        fd.SetClassContainerName(dividedUserInput[0]);
+                        fd.SetClassContainerName(dividedUserInput[p].ToString());
                     }
+
                 }
-                String constructorMatch = @"^(public|private).([^\s]+).\(";
+            }
+        }
+
+        private void StoreConstructorsAndFunctions(FormatData fd) {
+            
+            for (int p = 0; p < dividedUserInput.Length; p++) {
+                String constructorMatch = @"^(public|private)[ ](\S*)\(.*$";
                 String functionMatch = @"^(public|private).\w+\s\w+\(";
                 String functionOrConstructor = @"^(public|private)\s\w+.*$";
                 foreach (Match m in Regex.Matches(dividedUserInput[p].ToString(), functionOrConstructor)) {

@@ -93,13 +93,6 @@ namespace DocumentationBuilder {
             return leftAlign.ToString();
         }
 
-        /*public static Boolean IsPrintOverflow(String passedText, int TypeOrMethod) {
-            if (passedText.Length > TypeOrMethod) {
-                return true;
-            }
-            return false;
-        }*/
-
         public ArrayList FormatMethodText(String passedComment, int typeOrMethodWidth) { // This function takes input text, splits it by the width passed, and places it in to an Array.  
             StringBuilder textBlocks = new StringBuilder();
             ArrayList outputArray = new ArrayList();
@@ -127,27 +120,15 @@ namespace DocumentationBuilder {
             StringBuilder constructionRow = new StringBuilder();
 
             ArrayList constructionText = new ArrayList(FormatMethodText(displayString, this.udi.GetMethodWidth()));
-            constructionRow.Append(Environment.NewLine);
+         //   constructionRow.Append(Environment.NewLine);
             for (int p = 0; p < constructionText.Count; p++) {
                 constructionRow.Append(this.udi.GetVertIcon());
                 constructionRow.Append(constructionText[p]);
                 constructionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
             }
-            constructionRow.Append(CreateLine(this.udi.GetMethodWidth(), this.udi.GetHoriIcon(), this.udi.GetCrosIcon()));
+            constructionRow.Append(CreateLine(this.udi.GetMethodWidth(), this.udi.GetHoriIcon(), this.udi.GetCrosIcon()) + Environment.NewLine);
             return constructionRow.ToString();
         }
-
-    /*    public String AssembleConstructorRow(String displayString, String displayComment) {
-            StringBuilder constructionRow = new StringBuilder();
-            ArrayList constructionText = new ArrayList(FormatMethodText(displayString + " -- " + displayComment, this.udi.GetMethodWidth()));
-            for (int p = 0; p < constructionText.Count; p++) {
-                constructionRow.Append(this.udi.GetVertIcon());
-                constructionRow.Append(constructionText[p]);
-                constructionRow.Append(this.udi.GetVertIcon() + Environment.NewLine);
-            }
-            constructionRow.Append(CreateLine(this.udi.GetMethodWidth(), this.udi.GetHoriIcon(), this.udi.GetCrosIcon()));
-            return constructionRow.ToString();
-        }*/
 
         public String AssembleFunctionRow(String passedType, String passedMethod) { // This is one of the heavy lifters in the library.  This function builds a function row, without a comment.  It sends the passed data to be formatted, and returns it formatted.
             StringBuilder functionRow = new StringBuilder();

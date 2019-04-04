@@ -55,11 +55,11 @@ namespace DocumentationBuilder {
                 }
             }
             displayText.Append(Environment.NewLine + Environment.NewLine + tf.GetMethodSummaryHeader());
-            for (int r = 0; r < fd.GetMethodCount(); r++) {
-                if (String.IsNullOrEmpty(fd.GetMethodComment(r))) {
-                    displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r)));
+            for (int r = 0; r < fd.GetFunctionCount(); r++) {
+                if (String.IsNullOrEmpty(fd.GetFunctionComment(r))) {
+                    displayText.Append(tf.AssembleFunctionRow(fd.GetFunctionType(r), fd.GetFunctionTitle(r)));
                 } else {
-                    displayText.Append(tf.AssembleFunctionRow(fd.GetType(r), fd.GetMethod(r), fd.GetMethodComment(r)));
+                    displayText.Append(tf.AssembleFunctionRow(fd.GetFunctionType(r), fd.GetFunctionTitle(r), fd.GetFunctionComment(r)));
                 }
             }
             displayText.Append(DisplayCurrentDate());
