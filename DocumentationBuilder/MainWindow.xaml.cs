@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace DocumentationBuilder {
     /// <summary>
@@ -195,6 +196,11 @@ namespace DocumentationBuilder {
             if(InputBox.Text == "Paste in Functions you would like formatted") {
                 InputBox.Text = String.Empty;
             }
+        }
+
+        private void MenuAboutButton_Click(object sender, RoutedEventArgs e) {
+            Window1 win1 = new Window1();
+            win1.ShowDialog();
         }
     }
 }
