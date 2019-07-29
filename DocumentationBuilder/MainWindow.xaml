@@ -23,7 +23,7 @@
                     <TabItem Header="Input">
                         <Grid Background="#FFE5E5E5">
                             <Canvas HorizontalAlignment="Left" Height="100">
-                                <TextBox x:Name="InputBox" HorizontalAlignment="Left" Height="330" TextWrapping="Wrap" Text="Paste in Functions you would like formatted" VerticalAlignment="Top" Width="582" AcceptsReturn="True" FontFamily="Courier New" FontSize="11" VerticalScrollBarVisibility="Auto" Canvas.Left="11" Canvas.Top="-109" GotFocus="InputBox_GotFocus" LostFocus="InputBox_LostFocus"/>
+                                <TextBox x:Name="InputBox" HorizontalAlignment="Left" Height="330" TextWrapping="Wrap" Text="Paste in Functions you would like formatted" VerticalAlignment="Top" Width="582" AcceptsReturn="True" FontFamily="Courier New" FontSize="11" VerticalScrollBarVisibility="Auto" Canvas.Left="11" Canvas.Top="-109" LostFocus="InputBox_LostFocus" MouseDoubleClick="InputBox_MouseDoubleClick" GotFocus="InputBox_GotFocus"/>
                             </Canvas>
                         </Grid>
                     </TabItem>

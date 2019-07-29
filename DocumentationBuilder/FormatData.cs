@@ -28,7 +28,7 @@ namespace DocumentationBuilder {
 
         }
 
-        public void SplitConstructorComment(String passedRawData) { // I'm not entirely sure what this does exactly, to be honest.  passedRawData is saved to rawConstructorsorMethods
+        public void SplitConstructorComment(String passedRawData) { // Splits the passed type from the name of the function.
             if (Regex.IsMatch(passedRawData, @"//.*$")) {
                 String[] constructorAndComment = passedRawData.Split(new string[] { "//" }, StringSplitOptions.None);
                 SetConstructor(constructorAndComment[1].Replace("{", ""), constructorAndComment[1]);
@@ -37,7 +37,7 @@ namespace DocumentationBuilder {
             }
         }
 
-        public void SplitFunctionComment(String passedRawData) {
+        public void SplitFunctionComment(String passedRawData) { // This function splits the name of the function from the comment.
             String[] visibilityAndFunction = passedRawData.Split(new[] { ' ' }, 3);
             if (Regex.IsMatch(passedRawData, @"//.*$")) {
                 String[] functionAndComment = visibilityAndFunction[2].Split(new string[] { "//" }, StringSplitOptions.None);
@@ -48,7 +48,7 @@ namespace DocumentationBuilder {
             }
         }
 
-        public void SetConstructor(String passedConstruct) { // Method that saves passed data to constructor dataset.  If only one argument is passed, constructor comment is blank.
+        public void SetConstructor(String passedConstruct) { // Saves passed data to constructor dataset.  If only one argument is passed, constructor comment is blank.
             SetConstructorTitle(passedConstruct.Trim());
             SetConstructorComment("");
         }

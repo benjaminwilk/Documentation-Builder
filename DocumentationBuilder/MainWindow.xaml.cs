@@ -181,13 +181,19 @@ namespace DocumentationBuilder {
             }
         }
 
-        private void InputBox_GotFocus(object sender, RoutedEventArgs e) {
-            InputBox.Text = String.Empty;
-        }
-
         private void InputBox_LostFocus(object sender, RoutedEventArgs e) {
             if (InputBox.Text == "") {
                 InputBox.Text = "Paste in Functions you would like formatted";
+            }
+        }
+
+        private void InputBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            InputBox.Text = String.Empty;
+        }
+
+        private void InputBox_GotFocus(object sender, RoutedEventArgs e) {
+            if(InputBox.Text == "Paste in Functions you would like formatted") {
+                InputBox.Text = String.Empty;
             }
         }
     }
