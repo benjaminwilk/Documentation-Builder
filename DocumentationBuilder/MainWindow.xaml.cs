@@ -23,9 +23,9 @@ namespace DocumentationBuilder {
         }
 
         private void ComputationButton_Click(object sender, RoutedEventArgs e) {
-            string computedText = formatOutputText();
+            string computedText = FormatOutputText();
             if (PrintToScreenRadio.IsChecked == true) {
-                this.InputBox.Text = String.Empty;
+                //this.InputBox.Text = String.Empty;
                 InputBox.AppendText(computedText);
             } else {
                 if (PrintToFileRadio.IsChecked == true && FilePath.Text == "Filepath" || String.IsNullOrEmpty(FilePath.Text)) {
@@ -36,7 +36,23 @@ namespace DocumentationBuilder {
             }
         }
 
-        private String formatOutputText() {
+        private String FormatOutputText() {
+            if (LanguageDropdown.Text.Contains("C#")) {
+                return ParseCSharp();
+            }
+            if (LanguageDropdown.Text.Contains("Java")) {
+                return ParseJava();
+            }
+            if (LanguageDropdown.Text.Contains("Ruby")) {
+                return ParseRuby();
+            }
+            if (LanguageDropdown.Text.Contains("Python")) {
+                return ParsePython();
+            }
+            return "Error: Language not chosen properly.";
+        }
+
+        private String ParseCSharp() {
             FormatData fd = new FormatData();
             TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
             DocumentStripper ds = new DocumentStripper(InputBox.Text, fd);
@@ -65,6 +81,18 @@ namespace DocumentationBuilder {
             }
             displayText.Append(DisplayCurrentDate());
             return displayText.ToString();
+        }
+
+        private String ParseJava() {
+            return "Java";
+        }
+
+        private String ParseRuby() {
+            return "Ruby";
+        }
+
+        private String ParsePython() {
+            return "Python";
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e) {

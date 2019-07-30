@@ -34,7 +34,7 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <GroupBox x:Name="OptionOutputSettingsBox" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Output Settings" Height="92" Width="464" Margin="76,223,0,0" Grid.ColumnSpan="2">
+                            <GroupBox x:Name="OptionOutputSettingsBox" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Output Settings" Height="92" Width="464" Margin="77,243,0,0" Grid.ColumnSpan="2">
                                 <Canvas>
                                     <Canvas Height="100" Canvas.Left="10" Width="465">
                                         <RadioButton x:Name="PrintToScreenRadio" Content="Print to Screen" Canvas.Left="10" Canvas.Top="10" IsEnabled="True" IsChecked="True"/>
@@ -44,16 +44,16 @@
                                     </Canvas>
                                 </Canvas>
                             </GroupBox>
-                            <GroupBox x:Name="WidthBox" Header="Width" HorizontalAlignment="Left" Height="192" Margin="344,10,0,0" VerticalAlignment="Top" Width="250" Grid.Column="1">
+                            <GroupBox x:Name="WidthBox" Header="Width" HorizontalAlignment="Left" Height="179" Margin="344,5,0,0" VerticalAlignment="Top" Width="250" Grid.Column="1">
                                 <Canvas Height="167" InkCanvas.Left="10" Margin="0,5,-2,5">
                                     <Label x:Name="OptionsWidthText" Content="Type Width: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="26"/>
                                     <Label x:Name="OptionsMethodText" Content="Method Width: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="60"/>
                                     <TextBox x:Name="TypeWidthInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" Canvas.Left="123" Canvas.Top="28" Initialized="TypeWidthInput_Initialized" MaxLength="100" GotFocus="TypeWidthInput_GotFocus" LostFocus="TypeWidthInput_LostFocus"/>
                                     <TextBox x:Name="MethodWidthInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" Canvas.Left="123" Canvas.Top="63" Initialized="MethodWidthInput_Initialized" MaxLength="100" GotFocus="MethodWidthInput_GotFocus" LostFocus="MethodWidthInput_LostFocus"/>
-                                    <Button x:Name="resetWidths" Content="Reset" Canvas.Left="10" Canvas.Top="134" Width="81" Height="23" Click="WidthResetButton_Click" />
+                                    <Button x:Name="resetWidths" Content="Reset" Canvas.Left="10" Canvas.Top="126" Width="81" Height="23" Click="WidthResetButton_Click" />
                                 </Canvas>
                             </GroupBox>
-                            <GroupBox Grid.Column="1" Header="Icons" HorizontalAlignment="Left" Height="192" Margin="10,10,0,0" VerticalAlignment="Top" Width="250">
+                            <GroupBox Grid.Column="1" Header="Icons" HorizontalAlignment="Left" Height="179" Margin="10,5,0,0" VerticalAlignment="Top" Width="250">
                                 <Canvas x:Name="IconBox" HorizontalAlignment="Left" Height="174" Margin="0,0,-2,-4" VerticalAlignment="Top" Width="240">
                                     <Label x:Name="OptionsVerticalText_Copy" Content="Vertical Icon: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                                     <Label x:Name="OptionsHorizontalText_Copy" Content="Horizontal Icon: " HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="45"/>
@@ -61,8 +61,16 @@
                                     <TextBox x:Name="VerticalIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="27" Padding="8,1,1,1" Canvas.Left="127" Canvas.Top="13" Initialized="VerticalIconInput_Initialized" MaxLength="5" LostFocus="VerticalIconInput_LostFocus" GotFocus="VerticalIconInput_GotFocus"/>
                                     <TextBox x:Name="HorizontalIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="27" Padding="7,1,1,1" Canvas.Left="127" Canvas.Top="47" Initialized="HorizontalIconInput_Initialized" MaxLength="5" GotFocus="HorizontalIconInput_GotFocus" LostFocus="HorizontalIconInput_LostFocus"/>
                                     <TextBox x:Name="CrossIconInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="27" RenderTransformOrigin="0.574,0.852" Padding="4,1,10,1" Canvas.Left="127" Canvas.Top="82" Initialized="CrossIconInput_Initialized" MaxLength="5" GotFocus="CrossIconInput_GotFocus" LostFocus="CrossIconInput_LostFocus"/>
-                                    <Button Content="Reset" Canvas.Left="10" Canvas.Top="141" Width="81" Height="23" Click="IconsResetButton_Click" />
+                                    <Button x:Name="IconResetButton" Content="Reset" Canvas.Left="10" Canvas.Top="133" Width="81" Height="23" Click="IconsResetButton_Click" />
                                 </Canvas>
+                            </GroupBox>
+                            <GroupBox Grid.Column="1" Header="Language" HorizontalAlignment="Left" Height="56" Margin="199,185,0,0" VerticalAlignment="Top" Width="205" RenderTransformOrigin="0.5,0.5">
+                                <ComboBox x:Name="LanguageDropdown" HorizontalAlignment="Left" Height="22" Margin="10,8,0,0" VerticalAlignment="Top" Width="178">
+                                    <ComboBoxItem x:Name="C_Selector" Content="C#" IsSelected="True"/>
+                                    <ComboBoxItem x:Name="JavaSelector" Content="Java"/>
+                                    <ComboBoxItem x:Name="PythonSelector" Content="Python"/>
+                                    <ComboBoxItem x:Name="RubySelector" Content="Ruby"/>
+                                </ComboBox>
                             </GroupBox>
                         </Grid>
                     </TabItem>
