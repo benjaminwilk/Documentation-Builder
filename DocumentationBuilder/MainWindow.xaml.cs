@@ -24,6 +24,7 @@ namespace DocumentationBuilder {
 
         private void ComputationButton_Click(object sender, RoutedEventArgs e) {
             string computedText = FormatOutputText();
+            this.InputBox.Text = String.Empty;
             if (PrintToScreenRadio.IsChecked == true) {
                 //this.InputBox.Text = String.Empty;
                 InputBox.AppendText(computedText);
@@ -37,25 +38,25 @@ namespace DocumentationBuilder {
         }
 
         private String FormatOutputText() {
-            if (LanguageDropdown.Text.Contains("C#")) {
+            if (LanguageDropdown.Text.Equals("C#")) {
                 return ParseCSharp();
             }
-            if (LanguageDropdown.Text.Contains("Java")) {
+            if (LanguageDropdown.Text.Equals("Java")) {
                 return ParseJava();
             }
-            if (LanguageDropdown.Text.Contains("Ruby")) {
+            if (LanguageDropdown.Text.Equals("Ruby")) {
                 return ParseRuby();
             }
-            if (LanguageDropdown.Text.Contains("Python")) {
+            if (LanguageDropdown.Text.Equals("Python")) {
                 return ParsePython();
             }
-            return "Error: Language not chosen properly.";
+            return "Error: Language dropdown error.";
         }
 
         private String ParseCSharp() {
             FormatData fd = new FormatData();
             TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
-            DocumentStripper ds = new DocumentStripper(InputBox.Text, fd);
+            DocumentStripper ds = new DocumentStripper(InputBox.Text, fd, "C#");
             StringBuilder displayText = new StringBuilder();
             if (!fd.IsClassContainerDescriptionSet()) {
                 displayText.Append(fd.ReturnClassContainerName());
@@ -84,14 +85,54 @@ namespace DocumentationBuilder {
         }
 
         private String ParseJava() {
-            return "Java";
+            FormatData fd = new FormatData();
+            TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
+            DocumentStripper ds = new DocumentStripper(InputBox.Text, fd, "Java");
+            StringBuilder displayText = new StringBuilder();
+            if (!fd.IsClassContainerDescriptionSet()) {
+                displayText.Append(fd.ReturnClassContainerName());
+            } else {
+                displayText.Append(fd.GetClassContainerName() + " -- " + fd.GetClassContainerDescription());
+                displayText.Append(Environment.NewLine + Environment.NewLine);
+            }
+            displayText.Append(tf.GetConstructorSummaryHeader() + Environment.NewLine);
+            for (int p = 0; p < fd.ConstructorCount(); p++) {
+                if (!fd.IsCommentSet(p)) {
+                    displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p)));
+                } else {
+                    displayText.Append(tf.AssembleConstructorRow(fd.GetConstructorTitle(p) + " -- " + fd.GetConstructorComment(p)));
+                }
+            }
+            displayText.Append(Environment.NewLine + Environment.NewLine + tf.GetMethodSummaryHeader());
+            for (int r = 0; r < fd.GetFunctionCount(); r++) {
+                if (String.IsNullOrEmpty(fd.GetFunctionComment(r))) {
+                    displayText.Append(tf.AssembleFunctionRow(fd.GetFunctionType(r), fd.GetFunctionTitle(r)));
+                } else {
+                    displayText.Append(tf.AssembleFunctionRow(fd.GetFunctionType(r), fd.GetFunctionTitle(r), fd.GetFunctionComment(r)));
+                }
+            }
+            displayText.Append(DisplayCurrentDate());
+            return displayText.ToString();
         }
 
         private String ParseRuby() {
+            FormatData fd = new FormatData();
+            TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
+            DocumentStripper ds = new DocumentStripper(InputBox.Text, fd, "Ruby");
+            StringBuilder displayText = new StringBuilder();
+
+
             return "Ruby";
         }
 
         private String ParsePython() {
+            FormatData fd = new FormatData();
+            TextFramework tf = new TextFramework(VerticalIconInput.Text, HorizontalIconInput.Text, CrossIconInput.Text, Int32.Parse(TypeWidthInput.Text), Int32.Parse(MethodWidthInput.Text));
+            DocumentStripper ds = new DocumentStripper(InputBox.Text, fd, "Python");
+            StringBuilder displayText = new StringBuilder();
+
+
+
             return "Python";
         }
 

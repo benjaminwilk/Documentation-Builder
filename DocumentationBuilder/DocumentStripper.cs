@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System;  
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +12,20 @@ namespace DocumentationBuilder {
         //String[] userText;
         private String[] dividedUserInput;
 
-        public DocumentStripper(String rawUserText, FormatData fd) {
+        public DocumentStripper(String rawUserText, FormatData fd, String codeType) {
             SplitInputText(rawUserText);
             TrimUserInput();
-            SetClass(fd);
-            StoreConstructorsAndFunctions(fd);
+            if (codeType.Equals("Java") || codeType.Equals("C#")) {
+                SetJavaClass(fd);
+                StoreJavaConstructorsAndFunctions(fd);
+            }
+            if (codeType.Equals("Python")) {
+
+            }
+            if (codeType.Equals("Ruby")) {
+
+            }
+
         }
 
         public void SplitInputText(String rawUserText) { // Divides each line by newline, and places the data in a string array.
@@ -29,7 +38,7 @@ namespace DocumentationBuilder {
             }
         }
 
-        private void SetClass(FormatData fd) {
+        private void SetJavaClass(FormatData fd) {
             String classRegex = @"^(class)[ ](\w+)[ ]\{.*";
             Regex rgx = new Regex(classRegex);
 
@@ -47,7 +56,25 @@ namespace DocumentationBuilder {
             }
         }
 
-        private void StoreConstructorsAndFunctions(FormatData fd) {
+        private void SetPythonClass(FormatData fd) {
+            String classRegex = @"^(class)[ ](\w+)[ ]\{.*";
+            Regex rgx = new Regex(classRegex);
+
+            for (int p = 0; p < dividedUserInput.Length; p++) {
+                Match match = rgx.Match(dividedUserInput[p]);
+                if (match.Success) {
+                    if (dividedUserInput[p].Contains("//")) {
+                        String[] splitClassTitleComment = dividedUserInput[p].Split(new string[] { "//" }, StringSplitOptions.None);
+                        fd.SetClassContainerNameAndDescription(dividedUserInput[0], dividedUserInput[1]);
+                    } else {
+                        fd.SetClassContainerName(dividedUserInput[p].ToString());
+                    }
+
+                }
+            }
+        }
+
+        private void StoreJavaConstructorsAndFunctions(FormatData fd) {
             
             for (int p = 0; p < dividedUserInput.Length; p++) {
                 String constructorMatch = @"^(public|private)[ ](\S*)\(.*$";
